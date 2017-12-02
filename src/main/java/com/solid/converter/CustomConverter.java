@@ -23,7 +23,7 @@ public class CustomConverter implements Converter {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <S, D> D convert(S object, Class<?> type) throws ConvertException {
+	public <S,D> D convert(S object, Class<?> type) throws ConvertException {
 		try {
 			return (D) getMethod(type).invoke(null, object);
 		} catch (Exception e) {

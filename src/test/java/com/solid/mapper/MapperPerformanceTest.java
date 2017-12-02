@@ -24,7 +24,7 @@ public class MapperPerformanceTest {
 		long duration;
 		
 		// Create two distinct objects and do a copy
-		final List<EntityClass> entities = new ArrayList<>();
+		final List<EntityClass> entities = new ArrayList<EntityClass>();
 		for (int i = 0; i < 1000000; i++) {
 			entities.add(new EntityClass("Hello", 24, true, 33, new EntityClassSubType("test", true), 33));
 		}
@@ -55,7 +55,7 @@ public class MapperPerformanceTest {
 		long duration;
 		
 		// Create two distinct objects and do a copy
-		final List<EntityClass> entities = new ArrayList<>();
+		final List<EntityClass> entities = new ArrayList<EntityClass>();
 		for (int i = 0; i < 1000000; i++) {
 			entities.add(new EntityClass("Hello", 24, true, 33, new EntityClassSubType("test", true), 33));
 		}
@@ -86,14 +86,14 @@ public class MapperPerformanceTest {
 		long duration;
 
 		// Create two distinct objects and do a copy
-		final List<EntityClass> entities = new ArrayList<>();
+		final List<EntityClass> entities = new ArrayList<EntityClass>();
 		for (int i = 0; i < 1000000; i++) {
 			entities.add(new EntityClass("Hello", 24, true, 33, new EntityClassSubType("test", true), 33));
 		}
 
 		// Copy objects manually
 		startTime = System.currentTimeMillis();
-		final List<DtoClass> dtos = new ArrayList<>();
+		final List<DtoClass> dtos = new ArrayList<DtoClass>();
 		for(int i = 0; i <entities.size(); i++) {
 			final EntityClass entity = entities.get(i);
 			final DtoClass dto = new DtoClass();
