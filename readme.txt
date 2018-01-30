@@ -8,3 +8,5 @@ https://github.com/Hervian/lambda-factory/issues/4
 http://central.sonatype.org/pages/requirements.html
 https://blog.idrsolutions.com/2015/06/how-to-upload-your-java-artifact-to-maven-central/
 https://maven.apache.org/guides/mini/guide-central-repository-upload.html
+5. Write examples for using Mapper/Spring versions.
+6. Create Website for mapper library.
