@@ -7,73 +7,73 @@ import org.apache.commons.collections.CollectionUtils;
 
 /**
  * Builder for creating {@link Mapper} objects.
- * 
+ *
  * @author Joseph Soliday
  *
  */
 public class MapperBuilder {
-	private List<Mapping<?, ?>> mappings = new ArrayList<Mapping<?, ?>>();
+	private List<Mapping<?, ?>> mappings = new ArrayList<>();
 	private List<CustomMapping> customMappings = null;
-	private List<Mapper> children = new ArrayList<Mapper>();
+	private final List<Mapper> children = new ArrayList<>();
 	private MapperType type = MapperType.FIELD;
 
 	/**
 	 * Adds a mapping.
-	 * 
+	 *
 	 * @param mapping the mapping to add.
 	 * @return the current instance of {@link MapperBuilder}
 	 */
-	public MapperBuilder addMapping(final CustomMapping mapping) {
-		this.mappings.add(mapping);
+    public MapperBuilder addMapping(final Mapping<?, ?> mapping) {
+		mappings.add(mapping);
 		return this;
 	}
-	
+
 	/**
 	 * Sets the mappings for this mapper.
-	 * 
+	 *
 	 * @param mappings the mappings
-	 * 
+	 *
 	 * @return the current instance of {@link MapperBuilder}
 	 */
 	public MapperBuilder mappings(final List<Mapping<?,?>> mappings) {
 		this.mappings = mappings;
 		return this;
 	}
-	
+
 	/**
 	 * Adds a child to the mapper.
-	 * 
+	 *
 	 * @param mapper the child mapper
-	 * 
+	 *
 	 * @return the current instance of {@link MapperBuilder}
 	 */
 	public MapperBuilder addChild(final Mapper child) {
-		this.children.add(child);
+		children.add(child);
 		return this;
 	}
-	
+
 	/**
 	 * Sets the mapper type.
-	 * 
+	 *
 	 * @param type the mapper type
-	 * 
+	 *
 	 * @return the current instance of {@link MapperBuilder}
 	 */
 	public MapperBuilder type(final MapperType type) {
 		this.type = type;
 		return this;
 	}
-	
+
 	/**
 	 * Builds a {@link Mapper}.
-	 * 
+	 *
 	 * @param sourceType the source type to map
 	 * @param destinationType the destination type to map
-	 * 
+	 *
 	 * @return a {@link Mapper}
 	 */
 	public Mapper build(final Class<?> sourceType, final Class<?> destinationType) {
-		Mapper mapper = new ObjectMapper(sourceType, destinationType, type);
+		final Mapper mapper = new ObjectMapper(sourceType, destinationType, type);
 		if (!CollectionUtils.isEmpty(getCustomMappings())) {
 			mapper.getChildren().add(new CustomFieldMapper(sourceType, destinationType, getCustomMappings()));
 		}
@@ -82,16 +82,16 @@ public class MapperBuilder {
 		}
 		return mapper;
 	}
-	
+
 	private List<CustomMapping> getCustomMappings() {
-		if (this.customMappings == null && !CollectionUtils.isEmpty(this.mappings)) {
-			this.customMappings = new ArrayList<CustomMapping>();
-			for (final Mapping<?, ?> mapping: this.mappings) {
+		if (customMappings == null && !CollectionUtils.isEmpty(mappings)) {
+			customMappings = new ArrayList<>();
+			for (final Mapping<?, ?> mapping: mappings) {
 				if (mapping instanceof CustomMapping) {
-					this.customMappings.add((CustomMapping)mapping);
+					customMappings.add((CustomMapping)mapping);
 				}
 			}
 		}
-		return this.customMappings;
+		return customMappings;
 	}
 }
