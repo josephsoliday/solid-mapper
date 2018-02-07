@@ -34,7 +34,7 @@ public class MapperPerformanceTest {
 		final List<DtoClass> dtos = customFieldMapper.map(entities);
 		endTime = System.currentTimeMillis();
 		duration = (endTime - startTime);
-		System.out.println("Performance Field Reflection: " + duration + " milliseconds");
+        System.out.println("Performance Field Reflection with Custom Field Mapper: " + duration + " milliseconds");
 		for(int i = 0; i < entities.size(); i++) {
 			final EntityClass entity = entities.get(i);
 			final DtoClass dto = dtos.get(i);
