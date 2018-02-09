@@ -2,6 +2,8 @@ package com.solid.mapper;
 
 import java.util.List;
 
+import com.solid.mapper.annotation.Mapping;
+
 /**
  * Interface for mapping an object of one type to an object of another type.
  * 
@@ -41,5 +43,12 @@ public interface Mapper {
 	 * @return a list of children mappers
 	 */
 	public List<Mapper> getChildren();
+	
+	/**
+	 * Gets a list of mappings for this mapper.
+	 * 
+	 * @return a list of mappings
+	 */
+	public List<Mapping> getMappings();
 	
 }

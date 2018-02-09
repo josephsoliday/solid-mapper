@@ -50,7 +50,8 @@ public abstract class AbstractMapper implements Mapper {
 		return destinationType;
 	}
 	
-	private List<Mapping> getMappings() {
+	@Override
+	public List<Mapping> getMappings() {
 		if (mappings == null) {
 			mappings = new ArrayList<>();
 			final Annotation[] annotations = this.getClass().getAnnotationsByType(Mapping.class);

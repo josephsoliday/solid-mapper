@@ -68,7 +68,7 @@ public class MapperPerformanceTest {
                                                                                       .build())
                                                       .addMapping(new MappingBuilder().source("convertValue")
                                                                                       .customSourceConverter("java.lang.Integer.valueOf")
-                                                                                      .destination("length")
+                                                                                      .destination("convertValue")
                                                                                       .customDestinationConverter("java.lang.String.valueOf")
                                                                                       .type(MappingType.BI_DIRECTIONAL)
                                                                                       .build())
