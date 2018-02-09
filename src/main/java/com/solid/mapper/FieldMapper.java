@@ -15,11 +15,11 @@ import com.solid.util.ReflectionUtils;
  * @author Joseph Soliday
  * 
  */
-class FieldMapper extends AbstractMapper implements Mapper {
+public class FieldMapper extends AbstractMapper implements Mapper {
 	
 	private final Map<Class<?>, List<Field>> fieldCache = new HashMap<>();
 
-	FieldMapper(final Class<?> sourceType, final Class<?> destinationType) {
+	protected FieldMapper(final Class<?> sourceType, final Class<?> destinationType) {
 		super(sourceType, destinationType);
 	}
 	

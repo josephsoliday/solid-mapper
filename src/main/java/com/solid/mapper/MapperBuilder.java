@@ -73,7 +73,7 @@ public class MapperBuilder {
 	 * @return a {@link Mapper}
 	 */
 	public Mapper build(final Class<?> sourceType, final Class<?> destinationType) {
-		final Mapper mapper = new ObjectMapper(sourceType, destinationType, type);
+		final Mapper mapper = new ParentMapper(sourceType, destinationType, type);
 		if (!CollectionUtils.isEmpty(getCustomMappings())) {
 			mapper.getChildren().add(new CustomFieldMapper(sourceType, destinationType, getCustomMappings()));
 		}

@@ -13,11 +13,11 @@ import java.util.function.Function;
  * 
  */
 @SuppressWarnings("rawtypes")
-class CustomLambdaMapper extends AbstractMapper implements Mapper {
+public class CustomLambdaMapper extends AbstractMapper implements Mapper {
 	
 	private final Map<Class<?>, List<CustomLambdaMapping>> mappingCache = new HashMap<>();
 
-	CustomLambdaMapper(final Class<?> sourceType, final Class<?> destinationType) {
+	protected CustomLambdaMapper(final Class<?> sourceType, final Class<?> destinationType) {
 		super(sourceType, destinationType);
 	}
 	

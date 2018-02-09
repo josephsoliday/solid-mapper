@@ -18,12 +18,12 @@ import com.solid.util.ReflectionUtils;
  * @author Joseph Soliday
  * 
  */
-class CustomPropertyMapper extends AbstractMapper implements Mapper {
+public class CustomPropertyMapper extends AbstractMapper implements Mapper {
 	private final Map<Class<?>, List<ObjectMethod>> customPropertyCache = new HashMap<>();
 	private final Map<String, Converter> converterCache = new HashMap<>();
 	private List<CustomMapping> mappings = null;
 
-	CustomPropertyMapper(final Class<?> sourceType, final Class<?> destinationType, final List<CustomMapping> mappings) {
+	protected CustomPropertyMapper(final Class<?> sourceType, final Class<?> destinationType, final List<CustomMapping> mappings) {
 		super(sourceType, destinationType);
 		this.mappings = mappings;
 	}

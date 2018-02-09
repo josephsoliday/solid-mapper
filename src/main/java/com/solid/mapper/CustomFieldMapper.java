@@ -18,13 +18,13 @@ import com.solid.util.ReflectionUtils;
  * @author Joseph Soliday
  * 
  */
-class CustomFieldMapper extends AbstractMapper implements Mapper {
+public class CustomFieldMapper extends AbstractMapper implements Mapper {
 	
 	private final Map<Class<?>, List<ObjectField>> customFieldCache = new HashMap<>();
 	private final Map<String, Converter> converterCache = new HashMap<>();
 	private List<CustomMapping> mappings = null;
 
-	CustomFieldMapper(final Class<?> sourceType, final Class<?> destinationType, final List<CustomMapping> mappings) {
+	protected CustomFieldMapper(final Class<?> sourceType, final Class<?> destinationType, final List<CustomMapping> mappings) {
 		super(sourceType, destinationType);
 		this.mappings = mappings;
 	}

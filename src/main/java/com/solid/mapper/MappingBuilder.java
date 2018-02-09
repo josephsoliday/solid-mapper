@@ -76,7 +76,7 @@ public class MappingBuilder {
             }
             return null;
         } catch (final Exception e) {
-            throw new CustomMappingException("Unable to get converter for custom mapping: " + e.getMessage(), e);
+            throw new MappingException("Unable to get converter for custom mapping: " + e.getMessage(), e);
         }
     }
 }

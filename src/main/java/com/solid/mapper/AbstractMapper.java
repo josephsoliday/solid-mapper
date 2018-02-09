@@ -4,8 +4,6 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.solid.converter.Converter;
-import com.solid.converter.CustomConverter;
 import com.solid.mapper.annotation.Mapping;
 
 /**
@@ -23,7 +21,7 @@ public abstract class AbstractMapper implements Mapper {
 	
 	private List<Mapping> mappings = null;
 	
-	public AbstractMapper(final Class<?> sourceType, final Class<?> destinationType, MapperType type) {
+	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType, MapperType type) {
 		this.sourceType = sourceType;
 		this.destinationType = destinationType;
 		this.getChildren().add(type == MapperType.FIELD ? new FieldMapper(sourceType, destinationType) : new PropertyMapper(sourceType, destinationType));
@@ -32,7 +30,7 @@ public abstract class AbstractMapper implements Mapper {
 		}
 	}
 	
-	public AbstractMapper(final Class<?> sourceType, final Class<?> destinationType) {
+	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType) {
 		this.sourceType = sourceType;
 		this.destinationType = destinationType;
 	}
@@ -68,28 +66,15 @@ public abstract class AbstractMapper implements Mapper {
 	
 	private List<CustomMapping> convert(final List<Mapping> mappings) {
 		final List<CustomMapping> customMappings = new ArrayList<CustomMapping>();
-		mappings.forEach(mapping -> customMappings.add(new CustomMapping(mapping.source(), 
-																		 getConverter(mapping.customSourceConverter(), 
-																					  mapping.sourceConverter()), 
-																			          mapping.destination(), 
-																	     getConverter(mapping.customDestinationConverter(), 
-																					  mapping.destinationConverter()), 
-																			          mapping.type())));
+		mappings.forEach(mapping -> customMappings.add((CustomMapping) new MappingBuilder().source(mapping.source())
+		        																		   .customSourceConverter(mapping.customSourceConverter())
+		        																		   .sourceConverter(mapping.sourceConverter())
+		        																		   .destination(mapping.destination())
+		        																		   .customDestinationConverter(mapping.customDestinationConverter())
+		        																		   .destinationConverter(mapping.destinationConverter())
+		        																		   .type(mapping.type())
+		        																		   .build()));
 		return customMappings;
-	}
-	
-	private Converter getConverter(final String customConverter, final Class<?> converter) {
-		try
-		{
-			if (customConverter != null && !customConverter.isEmpty()) {
-				return new CustomConverter(customConverter);
-			} else if (converter != null && !converter.equals(Converter.class)) {
-				return (Converter) converter.newInstance();
-			}
-			return null;
-		} catch (Exception e) {
-			throw new CustomMappingException("Unable to get converter for custom mapping: " + e.getMessage(), e);
-		}
 	}
 	
 	@Override

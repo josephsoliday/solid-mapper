@@ -16,7 +16,7 @@ public abstract class AbstractMapping<S,D> implements Mapping<S,D> {
 	private Converter destinationConverter;
 	private MappingType type;
 	
-	AbstractMapping(final S source, 
+	protected AbstractMapping(final S source, 
 					final D destination, 
 					final MappingType type) {
 		this.source = source;
@@ -26,7 +26,7 @@ public abstract class AbstractMapping<S,D> implements Mapping<S,D> {
 		this.type = type;
 	}
 	
-	AbstractMapping(final S source, 
+	protected AbstractMapping(final S source, 
 					final Converter sourceConverter, 
 					final D destination, 
 					final Converter destinationConverter, 

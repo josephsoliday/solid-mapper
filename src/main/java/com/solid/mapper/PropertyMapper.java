@@ -16,11 +16,11 @@ import com.solid.util.ReflectionUtils;
  * @author Joseph Soliday
  * 
  */
-class PropertyMapper extends AbstractMapper implements Mapper {
+public class PropertyMapper extends AbstractMapper implements Mapper {
 	
 	private final Map<Class<?>, List<Method>> propertyCache = new HashMap<>();
 
-	PropertyMapper(final Class<?> sourceType, final Class<?> destinationType) {
+	protected PropertyMapper(final Class<?> sourceType, final Class<?> destinationType) {
 		super(sourceType, destinationType);
 	}
 	
