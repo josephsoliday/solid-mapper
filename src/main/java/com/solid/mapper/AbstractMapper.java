@@ -4,7 +4,10 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.solid.mapper.annotation.Mapping;
+import com.solid.mapper.custom.CustomFieldMapper;
+import com.solid.mapping.MappingBuilder;
+import com.solid.mapping.annotation.Mapping;
+import com.solid.mapping.custom.CustomMapping;
 
 /**
  * Abstract class with basic functionality for implementing {@link Mapper}.

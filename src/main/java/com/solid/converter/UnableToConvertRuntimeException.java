@@ -6,10 +6,10 @@ package com.solid.converter;
  * @author Joseph Soliday
  *
  */
-public class ConvertException extends RuntimeException {
+public class UnableToConvertRuntimeException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
-	public ConvertException(String message, Exception cause) {
+	public UnableToConvertRuntimeException(String message, Exception cause) {
 		super(message, cause);
 	}
 

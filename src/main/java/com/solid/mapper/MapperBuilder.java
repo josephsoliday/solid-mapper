@@ -5,8 +5,12 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 
+import com.solid.mapper.custom.CustomFieldMapper;
+import com.solid.mapping.Mapping;
+import com.solid.mapping.custom.CustomMapping;
+
 /**
- * Builder for creating {@link Mapper} objects.
+ * Builder for creating objects of type {@link Mapper}.
  *
  * @author Joseph Soliday
  *

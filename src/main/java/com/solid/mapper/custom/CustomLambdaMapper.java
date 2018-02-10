@@ -1,10 +1,15 @@
-package com.solid.mapper;
+package com.solid.mapper.custom;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+
+import com.solid.mapper.AbstractMapper;
+import com.solid.mapper.Mapper;
+import com.solid.mapper.MappingException;
+import com.solid.mapping.custom.CustomLambdaMapping;
 
 /**
  * Class for mapping custom properties between objects.

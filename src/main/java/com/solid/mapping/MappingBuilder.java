@@ -1,10 +1,13 @@
-package com.solid.mapper;
+package com.solid.mapping;
 
-import com.solid.converter.Converter;
-import com.solid.converter.CustomConverter;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+
+import com.solid.converter.ConverterBuilder;
+import com.solid.mapping.custom.CustomMapping;
 
 /**
- * Builder for creating {@link Mapping} objects.
+ * Builder for creating objects of type {@link Mapping}.
  *
  * @author Joseph Soliday
  *
@@ -17,6 +20,9 @@ public class MappingBuilder {
     private Class<?> destinationConverter;
     private String customDestinationConverter;
     private MappingType type;
+    
+    private Function getter;
+    private BiConsumer setter;
 
     public MappingBuilder() {
 
@@ -59,24 +65,11 @@ public class MappingBuilder {
 
     public Mapping<?, ?> build() {
         return new CustomMapping(source,
-                                 getConverter(customSourceConverter,
-                                              sourceConverter),
+                                 new ConverterBuilder().customConverter(customSourceConverter)
+                                 					   .converter(sourceConverter).build(),
                                  destination,
-                                 getConverter(customDestinationConverter,
-                                              destinationConverter),
+                                 new ConverterBuilder().customConverter(customDestinationConverter)
+           					   						   .converter(destinationConverter).build(),
                                  type);
-    }
-
-    private Converter getConverter(final String customConverter, final Class<?> converter) {
-        try {
-            if (customConverter != null && !customConverter.isEmpty()) {
-                return new CustomConverter(customConverter);
-            } else if (converter != null && !converter.equals(Converter.class)) {
-                return (Converter) converter.newInstance();
-            }
-            return null;
-        } catch (final Exception e) {
-            throw new MappingException("Unable to get converter for custom mapping: " + e.getMessage(), e);
-        }
     }
 }

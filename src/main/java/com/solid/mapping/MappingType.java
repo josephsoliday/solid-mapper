@@ -1,4 +1,4 @@
-package com.solid.mapper;
+package com.solid.mapping;
 
 /**
  * Enum that represents the different types of mapping.

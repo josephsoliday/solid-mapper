@@ -1,7 +1,11 @@
-package com.solid.mapper;
+package com.solid.mapping.custom;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+
+import com.solid.mapping.AbstractMapping;
+import com.solid.mapping.Mapping;
+import com.solid.mapping.MappingType;
 
 /**
  * Implementation of {@link Mapping} for mapping a property.
@@ -12,7 +16,7 @@ import java.util.function.Function;
 @SuppressWarnings("rawtypes")
 public class CustomLambdaMapping extends AbstractMapping<Function, BiConsumer> implements Mapping<Function, BiConsumer> {
 	
-	protected CustomLambdaMapping(Function source, BiConsumer destination, final MappingType type) {
+	public CustomLambdaMapping(Function source, BiConsumer destination, final MappingType type) {
 		super(source, destination, type);
 	}
 }

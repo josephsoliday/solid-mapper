@@ -1,4 +1,4 @@
-package com.solid.mapper;
+package com.solid.mapper.custom;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.solid.converter.Converter;
+import com.solid.mapper.AbstractMapper;
+import com.solid.mapper.Mapper;
+import com.solid.mapper.MappingException;
+import com.solid.mapping.custom.CustomMapping;
 import com.solid.util.ObjectField;
 import com.solid.util.ReflectionUtils;
 
@@ -24,7 +28,7 @@ public class CustomFieldMapper extends AbstractMapper implements Mapper {
 	private final Map<String, Converter> converterCache = new HashMap<>();
 	private List<CustomMapping> mappings = null;
 
-	protected CustomFieldMapper(final Class<?> sourceType, final Class<?> destinationType, final List<CustomMapping> mappings) {
+	public CustomFieldMapper(final Class<?> sourceType, final Class<?> destinationType, final List<CustomMapping> mappings) {
 		super(sourceType, destinationType);
 		this.mappings = mappings;
 	}
@@ -54,7 +58,7 @@ public class CustomFieldMapper extends AbstractMapper implements Mapper {
                 		converterCache.put(mapping.getDestination(), mapping.getDestinationConverter());
                 	}
                 } catch (final Exception e) {
-                    throw new CustomMappingException("Unable to load fields: "
+                    throw new UnableToLoadCustomFieldsRuntimeException("Unable to load fields: "
                                                      + e.getMessage(),
                                                      e);
                 }

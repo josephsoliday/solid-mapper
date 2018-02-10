@@ -23,11 +23,11 @@ public class CustomConverter implements Converter {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <S,D> D convert(S object, Class<?> type) throws ConvertException {
+	public <S,D> D convert(S object, Class<?> type) throws UnableToConvertRuntimeException {
 		try {
 			return (D) getMethod(type).invoke(null, object);
 		} catch (Exception e) {
-			throw new ConvertException("Unable to convert.", e);
+			throw new UnableToConvertRuntimeException("Unable to convert.", e);
 		}
 	}
 	

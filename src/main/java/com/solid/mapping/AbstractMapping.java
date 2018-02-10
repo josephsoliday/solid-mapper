@@ -1,4 +1,4 @@
-package com.solid.mapper;
+package com.solid.mapping;
 
 import com.solid.converter.Converter;
 
@@ -16,9 +16,9 @@ public abstract class AbstractMapping<S,D> implements Mapping<S,D> {
 	private Converter destinationConverter;
 	private MappingType type;
 	
-	protected AbstractMapping(final S source, 
-					final D destination, 
-					final MappingType type) {
+	public AbstractMapping(final S source, 
+						   final D destination, 
+						   final MappingType type) {
 		this.source = source;
 		this.sourceConverter = null;
 		this.destination = destination;

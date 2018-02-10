@@ -12,6 +12,8 @@ import com.solid.mapper.custom.BaseDto;
 import com.solid.mapper.custom.CustomMapper;
 import com.solid.mapper.custom.DtoClass;
 import com.solid.mapper.custom.EntityClass;
+import com.solid.mapping.MappingType;
+import com.solid.mapping.custom.CustomLambdaMapping;
 
 public class MapperTest {
 	
@@ -22,7 +24,19 @@ public class MapperTest {
 	@Test
 	public void test_map_withMappings() throws Exception {
 		//Mappings mappings = new MappingsBuilder().add(TestEvent::getSourceId, TestEvent::setId).build();
-		//TestEvent testEvent = new TestEvent();
+		TestEvent testEvent = new TestEvent();
+		
+		call2(testEvent, testEvent, TestEvent::getSourceId, TestEvent::setId);
+		
+		
+		Function<TestEvent, Long> getter = TestEvent::getSourceId;
+		BiConsumer<TestEvent, Long> setter = TestEvent::setId;
+		CustomLambdaMapping lambdaMapping = new CustomLambdaMapping(getter, setter, MappingType.BI_DIRECTIONAL);
+		lambdaMapping = new CustomLambdaMapping(getter, setter, MappingType.BI_DIRECTIONAL);
+		
+		call(testEvent, testEvent, getter, setter);
+		
+		
 		
 		//for (PropertyMapping mapping: mappings.getItems()) {
 		//	call(testEvent, testEvent, mapping.getGetter(), mapping.getSetter());
@@ -102,6 +116,10 @@ public class MapperTest {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <D, E, T> void call(D source, E dest, Function getter, BiConsumer setter) {
+		setter.accept(dest, getter.apply(source));
+	}
+	
+	public <S, D, T> void call2(S source, D dest, Function<S, T> getter, BiConsumer<D, T> setter) {
 		setter.accept(dest, getter.apply(source));
 	}
 	

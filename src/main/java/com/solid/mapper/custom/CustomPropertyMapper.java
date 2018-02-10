@@ -1,4 +1,4 @@
-package com.solid.mapper;
+package com.solid.mapper.custom;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.solid.converter.Converter;
+import com.solid.mapper.AbstractMapper;
+import com.solid.mapper.Mapper;
+import com.solid.mapper.MappingException;
+import com.solid.mapping.custom.CustomMapping;
 import com.solid.util.ObjectMethod;
 import com.solid.util.ReflectionUtils;
 
@@ -53,7 +57,7 @@ public class CustomPropertyMapper extends AbstractMapper implements Mapper {
                 		converterCache.put(mapping.getDestination(), mapping.getDestinationConverter());
                 	}
                 } catch (final Exception e) {
-                    throw new CustomMappingException("Unable to load properties: "
+                    throw new UnableToLoadCustomPropertiesRuntimeException("Unable to load properties: "
                                                      + e.getMessage(),
                                                      e);
                 }
