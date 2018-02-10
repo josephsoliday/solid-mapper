@@ -28,7 +28,7 @@ public class MapperPerformanceTest {
 		// Create two distinct objects and do a copy
 		final List<EntityClass> entities = new ArrayList<>();
 		for (int i = 0; i < 1000000; i++) {
-			entities.add(new EntityClass("Hello", 24, true, 33, new EntityClassSubType("test", true), 33));
+			entities.add(new EntityClass("Hello", i, true, 33, new EntityClassSubType("test", true), 33));
 		}
 
 		// Copy objects using the mapper
@@ -59,7 +59,7 @@ public class MapperPerformanceTest {
         // Create two distinct objects and do a copy
         final List<EntityClass> entities = new ArrayList<>();
         for (int i = 0; i < 1000000; i++) {
-            entities.add(new EntityClass("Hello", 24, true, 33, new EntityClassSubType("test", true), 33));
+            entities.add(new EntityClass("Hello", i, true, 33, new EntityClassSubType("test", true), 33));
         }
 
         // Copy objects using the mapper
@@ -102,7 +102,7 @@ public class MapperPerformanceTest {
 		// Create two distinct objects and do a copy
 		final List<EntityClass> entities = new ArrayList<>();
 		for (int i = 0; i < 1000000; i++) {
-			entities.add(new EntityClass("Hello", 24, true, 33, new EntityClassSubType("test", true), 33));
+			entities.add(new EntityClass("Hello", i, true, 33, new EntityClassSubType("test", true), 33));
 		}
 
 		// Copy objects using the mapper
@@ -133,7 +133,7 @@ public class MapperPerformanceTest {
 		// Create two distinct objects and do a copy
 		final List<EntityClass> entities = new ArrayList<>();
 		for (int i = 0; i < 1000000; i++) {
-			entities.add(new EntityClass("Hello", 24, true, 33, new EntityClassSubType("test", true), 33));
+			entities.add(new EntityClass("Hello", i, true, 33, new EntityClassSubType("test", true), 33));
 		}
 
 		// Copy objects manually
