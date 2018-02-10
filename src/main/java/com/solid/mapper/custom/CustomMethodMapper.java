@@ -9,20 +9,20 @@ import java.util.function.Function;
 import com.solid.mapper.AbstractMapper;
 import com.solid.mapper.Mapper;
 import com.solid.mapper.MappingException;
-import com.solid.mapping.custom.CustomLambdaMapping;
+import com.solid.mapping.custom.CustomMethodMapping;
 
 /**
- * Class for mapping custom properties between objects.
+ * Class for mapping custom methods between objects.
  *
  * @author Joseph Soliday
  * 
  */
 @SuppressWarnings("rawtypes")
-public class CustomLambdaMapper extends AbstractMapper implements Mapper {
+public class CustomMethodMapper extends AbstractMapper implements Mapper {
 	
-	private final Map<Class<?>, List<CustomLambdaMapping>> mappingCache = new HashMap<>();
+	private final Map<Class<?>, List<CustomMethodMapping>> mappingCache = new HashMap<>();
 
-	protected CustomLambdaMapper(final Class<?> sourceType, final Class<?> destinationType) {
+	protected CustomMethodMapper(final Class<?> sourceType, final Class<?> destinationType) {
 		super(sourceType, destinationType);
 	}
 	
@@ -36,7 +36,7 @@ public class CustomLambdaMapper extends AbstractMapper implements Mapper {
 	}
 	
 	private <S, D> void copyCustomProperties(final S source, final D destination) {
-		final List<CustomLambdaMapping> mappings = mappingCache.get(source.getClass());
+		final List<CustomMethodMapping> mappings = mappingCache.get(source.getClass());
 		if (mappings != null) {
 			mappings.forEach(mapping -> copyProperty(source, destination, mapping.getSource(), mapping.getDestination()));
 		}

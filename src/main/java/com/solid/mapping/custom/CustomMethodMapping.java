@@ -14,9 +14,9 @@ import com.solid.mapping.MappingType;
  * 
  */
 @SuppressWarnings("rawtypes")
-public class CustomLambdaMapping extends AbstractMapping<Function, BiConsumer> implements Mapping<Function, BiConsumer> {
+public class CustomMethodMapping extends AbstractMapping<Function, BiConsumer> implements Mapping<Function, BiConsumer> {
 	
-	public CustomLambdaMapping(Function source, BiConsumer destination) {
+	public CustomMethodMapping(Function source, BiConsumer destination) {
 		super(source, destination, MappingType.ONE_WAY);
 	}
 }
