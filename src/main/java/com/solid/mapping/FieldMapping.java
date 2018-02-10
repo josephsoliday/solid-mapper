@@ -11,10 +11,10 @@ import com.solid.converter.Converter;
 public class FieldMapping extends AbstractMapping<String, String> implements Mapping<String, String> {
 
 	public FieldMapping(final String source, 
-						 final Converter sourceConverter, 
-					     final String destination, 
-						 final Converter destinationConverter, 
-						 final MappingType type) {
+						final Converter sourceConverter, 
+					    final String destination, 
+						final Converter destinationConverter, 
+						final MappingType type) {
 		super(source, sourceConverter, destination, destinationConverter, type);
 	}
 }
