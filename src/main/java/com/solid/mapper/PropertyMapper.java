@@ -8,7 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.solid.converter.Converter;
+import com.solid.mapping.Mapping;
 import com.solid.util.ReflectionUtils;
+import com.solid.util.StringUtils;
 
 /**
  * Class for mapping properties between objects.
@@ -19,9 +22,10 @@ import com.solid.util.ReflectionUtils;
 public class PropertyMapper extends AbstractMapper implements Mapper {
 	
 	private final Map<Class<?>, List<Method>> propertyCache = new HashMap<>();
+	private final Map<String, Converter> converterCache = new HashMap<>();
 
-	protected PropertyMapper(final Class<?> sourceType, final Class<?> destinationType) {
-		super(sourceType, destinationType);
+	protected PropertyMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping<?,?>> mappings) {
+		super(sourceType, destinationType, mappings);
 	}
 	
 	@Override
@@ -52,9 +56,25 @@ public class PropertyMapper extends AbstractMapper implements Mapper {
 								    final Object destinationObject,
 								    final List<Method> sourceGetters, 
 								    final List<Method> destinationSetters) {
-		// Get a list of properties for each objects and compare
+		// Get a list of properties for each objects
 		final Map<String, Method> allSourceGetters = ReflectionUtils.getGetters(sourceObject);
 		final Map<String, Method> allDestinationSetters = ReflectionUtils.getSetters(destinationObject);
+		
+		// Load fields from mappings
+		for (final Mapping<?, ?> mapping : this.getMappings()) {
+			if (allSourceGetters.containsKey(StringUtils.capitalize(mapping.getSource().toString())) && allDestinationSetters.containsKey(StringUtils.capitalize(mapping.getDestination().toString()))) {
+				final Method sourceGetter = allSourceGetters.get(StringUtils.capitalize(mapping.getSource().toString()));
+				final Method destinationSetter = allDestinationSetters.get(StringUtils.capitalize(mapping.getDestination().toString()));
+				sourceGetters.add(sourceGetter);
+				destinationSetters.add(destinationSetter);
+				if (mapping.getSourceConverter() != null) {
+					converterCache.put(sourceGetter.getName(), mapping.getSourceConverter());
+					converterCache.put(destinationSetter.getName(), mapping.getDestinationConverter());
+				}
+			}
+		}
+		
+		// Load same properties
 		allSourceGetters.entrySet().forEach(entry -> {
 			if (allDestinationSetters.containsKey(entry.getKey())) {
 				final Method destinationSetter = allDestinationSetters.get(entry.getKey());
@@ -79,16 +99,19 @@ public class PropertyMapper extends AbstractMapper implements Mapper {
 		Iterator<Method> sourceGetterIterator = sourceGetters.iterator();
 		Iterator<Method> destinationSetterIterator = destinationSetters.iterator();
 		while (sourceGetterIterator.hasNext() && destinationSetterIterator.hasNext()) {
-			copyProperty(sourceGetterIterator.next(), sourceObject, destinationSetterIterator.next(), destinationObject);
+			final Method sourceGetter = sourceGetterIterator.next();
+			final Method destinationSetter = destinationSetterIterator.next();
+			copyProperty(sourceGetter, sourceObject, converterCache.get(sourceGetter.getName()), destinationSetter, destinationObject);
 		}
 	}
 
 	private void copyProperty(final Method sourceGetter, 
-						      final Object sourceObject, 
+						      final Object sourceObject,
+						      final Converter sourceConverter,
 						      final Method destinationSetter,
 						      final Object destinationObject) throws IllegalArgumentException,IllegalAccessException, InvocationTargetException {
-		
-		destinationSetter.invoke(destinationObject, sourceGetter.invoke(sourceObject));
+		destinationSetter.invoke(destinationObject, sourceConverter != null ? sourceConverter.convert(sourceGetter.invoke(sourceObject), sourceGetter.getReturnType()) 
+																			: sourceGetter.invoke(sourceObject));
 		
 		//final MethodHandles.Lookup lookup = MethodHandles.lookup();
 	    //MethodHandle sourceGetterMH = lookup.unreflect(sourceGetter);

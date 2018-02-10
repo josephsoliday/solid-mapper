@@ -109,12 +109,8 @@ public class ReflectionUtils {
     }
     
 	private static Method getMethod(final Object object, final String name, final Class<?> type, boolean getter) throws NoSuchMethodException, SecurityException {
-		return getter ? object.getClass().getDeclaredMethod(type == boolean.class ? IS_PREFIX + capitalize(name): GETTER_PREFIX + capitalize(name))
-				: object.getClass().getDeclaredMethod(SETTER_PREFIX + capitalize(name), type);
-	}
-	
-	private static String capitalize(final String value) {
-		return value.substring(0, 1).toUpperCase() + value.substring(1);
+		return getter ? object.getClass().getDeclaredMethod(type == boolean.class ? IS_PREFIX + StringUtils.capitalize(name): GETTER_PREFIX + StringUtils.capitalize(name))
+				: object.getClass().getDeclaredMethod(SETTER_PREFIX + StringUtils.capitalize(name), type);
 	}
 
 	/**

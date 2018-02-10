@@ -1,9 +1,6 @@
-package com.solid.mapping.custom;
+package com.solid.mapping;
 
 import com.solid.converter.Converter;
-import com.solid.mapping.AbstractMapping;
-import com.solid.mapping.Mapping;
-import com.solid.mapping.MappingType;
 
 /**
  * Implementation of {@link Mapping} for mapping a custom field or property.
@@ -11,9 +8,9 @@ import com.solid.mapping.MappingType;
  * @author Joseph Soliday
  * 
  */
-public class CustomMapping extends AbstractMapping<String, String> implements Mapping<String, String> {
+public class FieldMapping extends AbstractMapping<String, String> implements Mapping<String, String> {
 
-	public CustomMapping(final String source, 
+	public FieldMapping(final String source, 
 						 final Converter sourceConverter, 
 					     final String destination, 
 						 final Converter destinationConverter, 

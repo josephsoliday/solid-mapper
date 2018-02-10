@@ -4,7 +4,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import com.solid.converter.ConverterBuilder;
-import com.solid.mapping.custom.CustomMapping;
 
 /**
  * Builder for creating objects of type {@link Mapping}.
@@ -64,7 +63,7 @@ public class MappingBuilder {
     }
 
     public Mapping<?, ?> build() {
-        return new CustomMapping(source,
+        return new FieldMapping(source,
                                  new ConverterBuilder().customConverter(customSourceConverter)
                                  					   .converter(sourceConverter).build(),
                                  destination,

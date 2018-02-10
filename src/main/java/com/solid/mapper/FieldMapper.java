@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.solid.converter.Converter;
+import com.solid.mapping.Mapping;
 import com.solid.util.ReflectionUtils;
 
 /**
@@ -18,9 +20,10 @@ import com.solid.util.ReflectionUtils;
 public class FieldMapper extends AbstractMapper implements Mapper {
 	
 	private final Map<Class<?>, List<Field>> fieldCache = new HashMap<>();
+	private final Map<String, Converter> converterCache = new HashMap<>();
 
-	protected FieldMapper(final Class<?> sourceType, final Class<?> destinationType) {
-		super(sourceType, destinationType);
+	protected FieldMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping<?,?>> mappings) {
+		super(sourceType, destinationType, mappings);
 	}
 	
 	@Override
@@ -38,7 +41,7 @@ public class FieldMapper extends AbstractMapper implements Mapper {
 			try {
 				final List<Field> sourceFields = new ArrayList<>();
 				final List<Field> destinationFields = new ArrayList<>();
-				loadSameFields(source, destination, sourceFields, destinationFields);
+				loadFields(source, destination, sourceFields, destinationFields);
 				fieldCache.put(source.getClass(), sourceFields);
 				fieldCache.put(destination.getClass(), destinationFields);
 			} catch (final Exception e) {
@@ -47,13 +50,29 @@ public class FieldMapper extends AbstractMapper implements Mapper {
 		}
 	}
 	
-	private void loadSameFields(final Object sourceObject, 
-								final Object destinationObject,
-								final List<Field> sourceFields, 
-								final List<Field> destinationFields) {
-		// Get a list of fields for each objects and compare
+	private void loadFields(final Object sourceObject, 
+							final Object destinationObject,
+							final List<Field> sourceFields, 
+							final List<Field> destinationFields) {
+		// Get a list of fields for each object
 		final Map<String, Field> allSourceFields = ReflectionUtils.getFields(sourceObject);
 		final Map<String, Field> allDestinationFields = ReflectionUtils.getFields(destinationObject);
+		
+		// Load fields from mappings
+		for (final Mapping<?,?> mapping: this.getMappings()) {
+			if (allSourceFields.containsKey(mapping.getSource()) && allDestinationFields.containsKey(mapping.getDestination())) {
+				final Field sourceField = allSourceFields.get(mapping.getSource());
+				final Field destinationField = allDestinationFields.get(mapping.getDestination());
+				sourceFields.add(sourceField);
+				destinationFields.add(destinationField);
+				if (mapping.getSourceConverter() != null) {
+					converterCache.put(sourceField.getName(), mapping.getSourceConverter());
+					converterCache.put(destinationField.getName(), mapping.getDestinationConverter());
+				}
+			}
+		}
+		
+		// Load same fields
 		allSourceFields.entrySet().forEach(entry -> {
 			if (allDestinationFields.containsKey(entry.getKey())) {
 				final Field destinationField = allDestinationFields.get(entry.getKey());
@@ -78,16 +97,20 @@ public class FieldMapper extends AbstractMapper implements Mapper {
 		Iterator<Field> sourceFieldIterator = sourceFields.iterator();
 		Iterator<Field> destinationFieldIterator = destinationFields.iterator();
 		while (sourceFieldIterator.hasNext() && destinationFieldIterator.hasNext()) {
-			copyField(sourceFieldIterator.next(), sourceObject, destinationFieldIterator.next(), destinationObject);
+			final Field sourceField = sourceFieldIterator.next();
+			final Field destinationField = destinationFieldIterator.next();
+			copyField(sourceField, sourceObject, converterCache.get(sourceField.getName()), destinationField, destinationObject);
 		}
 	}
-
+	
 	private void copyField(final Field sourceField, 
-						final Object sourceObject, 
-						final Field destinationField,
-						final Object destinationObject) throws IllegalArgumentException, IllegalAccessException {
+						   final Object sourceObject, 
+						   final Converter sourceConverter,
+						   final Field destinationField, 
+						   final Object destinationObject) throws IllegalArgumentException, IllegalAccessException {
 		sourceField.setAccessible(true);
 		destinationField.setAccessible(true);
-		destinationField.set(destinationObject, sourceField.get(sourceObject));
+		destinationField.set(destinationObject,	sourceConverter != null ? sourceConverter.convert(sourceField.get(sourceObject), sourceField.getType())
+																		: sourceField.get(sourceObject));
 	}
 }

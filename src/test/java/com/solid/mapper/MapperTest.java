@@ -12,7 +12,7 @@ import com.solid.mapper.custom.BaseDto;
 import com.solid.mapper.custom.CustomMapper;
 import com.solid.mapper.custom.DtoClass;
 import com.solid.mapper.custom.EntityClass;
-import com.solid.mapping.custom.CustomMethodMapping;
+import com.solid.mapping.MethodMapping;
 
 public class MapperTest {
 	
@@ -30,8 +30,8 @@ public class MapperTest {
 		
 		Function<TestEvent, Long> getter = TestEvent::getSourceId;
 		BiConsumer<TestEvent, Long> setter = TestEvent::setId;
-		CustomMethodMapping lambdaMapping = new CustomMethodMapping(getter, setter);
-		lambdaMapping = new CustomMethodMapping(getter, setter);
+		MethodMapping lambdaMapping = new MethodMapping(getter, setter);
+		lambdaMapping = new MethodMapping(getter, setter);
 		
 		call(testEvent, testEvent, getter, setter);
 		

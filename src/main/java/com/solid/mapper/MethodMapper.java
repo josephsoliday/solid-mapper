@@ -1,4 +1,4 @@
-package com.solid.mapper.custom;
+package com.solid.mapper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,10 +6,8 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import com.solid.mapper.AbstractMapper;
-import com.solid.mapper.Mapper;
-import com.solid.mapper.MappingException;
-import com.solid.mapping.custom.CustomMethodMapping;
+import com.solid.mapping.Mapping;
+import com.solid.mapping.MethodMapping;
 
 /**
  * Class for mapping custom methods between objects.
@@ -18,12 +16,12 @@ import com.solid.mapping.custom.CustomMethodMapping;
  * 
  */
 @SuppressWarnings("rawtypes")
-public class CustomMethodMapper extends AbstractMapper implements Mapper {
+public class MethodMapper extends AbstractMapper implements Mapper {
 	
-	private final Map<Class<?>, List<CustomMethodMapping>> mappingCache = new HashMap<>();
+	private final Map<Class<?>, List<MethodMapping>> mappingCache = new HashMap<>();
 
-	protected CustomMethodMapper(final Class<?> sourceType, final Class<?> destinationType) {
-		super(sourceType, destinationType);
+	protected MethodMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping<?,?>> mappings) {
+		super(sourceType, destinationType, mappings);
 	}
 	
 	@Override
@@ -36,7 +34,7 @@ public class CustomMethodMapper extends AbstractMapper implements Mapper {
 	}
 	
 	private <S, D> void copyCustomProperties(final S source, final D destination) {
-		final List<CustomMethodMapping> mappings = mappingCache.get(source.getClass());
+		final List<MethodMapping> mappings = mappingCache.get(source.getClass());
 		if (mappings != null) {
 			mappings.forEach(mapping -> copyProperty(source, destination, mapping.getSource(), mapping.getDestination()));
 		}

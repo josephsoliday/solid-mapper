@@ -3,11 +3,7 @@ package com.solid.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
-
-import com.solid.mapper.custom.CustomFieldMapper;
 import com.solid.mapping.Mapping;
-import com.solid.mapping.custom.CustomMapping;
 
 /**
  * Builder for creating objects of type {@link Mapper}.
@@ -17,7 +13,6 @@ import com.solid.mapping.custom.CustomMapping;
  */
 public class MapperBuilder {
 	private List<Mapping<?, ?>> mappings = new ArrayList<>();
-	private List<CustomMapping> customMappings = null;
 	private final List<Mapper> children = new ArrayList<>();
 	private MapperType type = MapperType.FIELD;
 
@@ -77,25 +72,6 @@ public class MapperBuilder {
 	 * @return a {@link Mapper}
 	 */
 	public Mapper build(final Class<?> sourceType, final Class<?> destinationType) {
-		final Mapper mapper = new ParentMapper(sourceType, destinationType, type);
-		if (!CollectionUtils.isEmpty(getCustomMappings())) {
-			mapper.getChildren().add(new CustomFieldMapper(sourceType, destinationType, getCustomMappings()));
-		}
-		if (!children.isEmpty()) {
-			mapper.getChildren().addAll(children);
-		}
-		return mapper;
-	}
-
-	private List<CustomMapping> getCustomMappings() {
-		if (customMappings == null && !CollectionUtils.isEmpty(mappings)) {
-			customMappings = new ArrayList<>();
-			for (final Mapping<?, ?> mapping: mappings) {
-				if (mapping instanceof CustomMapping) {
-					customMappings.add((CustomMapping)mapping);
-				}
-			}
-		}
-		return customMappings;
+		return new ParentMapper(sourceType, destinationType, type, mappings);
 	}
 }

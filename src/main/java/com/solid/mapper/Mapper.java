@@ -2,7 +2,7 @@ package com.solid.mapper;
 
 import java.util.List;
 
-import com.solid.mapping.annotation.Mapping;
+import com.solid.mapping.Mapping;
 
 /**
  * Interface for mapping an object of one type to an object of another type.
@@ -49,6 +49,6 @@ public interface Mapper {
 	 * 
 	 * @return a list of mappings
 	 */
-	public List<Mapping> getMappings();
+	public <S,D> List<Mapping<S,D>> getMappings();
 	
 }

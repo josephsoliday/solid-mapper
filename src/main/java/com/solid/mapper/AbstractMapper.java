@@ -3,11 +3,14 @@ package com.solid.mapper;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import com.solid.mapper.custom.CustomFieldMapper;
+import org.apache.commons.collections.CollectionUtils;
+
+import com.solid.mapping.FieldMapping;
+import com.solid.mapping.Mapping;
 import com.solid.mapping.MappingBuilder;
-import com.solid.mapping.annotation.Mapping;
-import com.solid.mapping.custom.CustomMapping;
+import com.solid.mapping.MethodMapping;
 
 /**
  * Abstract class with basic functionality for implementing {@link Mapper}.
@@ -22,20 +25,38 @@ public abstract class AbstractMapper implements Mapper {
 	private final Class<?> sourceType;
 	private final Class<?> destinationType;
 	
-	private List<Mapping> mappings = null;
-	
-	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType, MapperType type) {
-		this.sourceType = sourceType;
-		this.destinationType = destinationType;
-		this.getChildren().add(type == MapperType.FIELD ? new FieldMapper(sourceType, destinationType) : new PropertyMapper(sourceType, destinationType));
-		if (!getMappings().isEmpty()) {
-			this.getChildren().add(new CustomFieldMapper(sourceType, destinationType, convert(getMappings())));
-		}
-	}
+	private List<Mapping<?, ?>> mappings = null;
 	
 	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType) {
 		this.sourceType = sourceType;
 		this.destinationType = destinationType;
+	}
+	
+	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping<?, ?>> mappings) {
+		this.sourceType = sourceType;
+		this.destinationType = destinationType;
+		this.mappings = mappings;
+	}
+	
+	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType, final MapperType type) {
+		this.sourceType = sourceType;
+		this.destinationType = destinationType;
+		loadChildren(type);
+	}
+	
+	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType, final MapperType type, final List<Mapping<?, ?>> mappings) {
+		this.sourceType = sourceType;
+		this.destinationType = destinationType;
+		this.mappings = mappings;
+		loadChildren(type);
+	}
+	
+	private void loadChildren(final MapperType type) {
+		this.getChildren().add(type == MapperType.FIELD ? new FieldMapper(sourceType, destinationType, this.getFieldMappings()) : new PropertyMapper(sourceType, destinationType, this.getFieldMappings()));
+		final List<Mapping<?,?>> methodMappings = getMethodMappings();
+		if (!CollectionUtils.isEmpty(methodMappings)) {
+			this.getChildren().add(new MethodMapper(sourceType, destinationType, methodMappings));
+		}
 	}
 	
 	@Override
@@ -51,15 +72,24 @@ public abstract class AbstractMapper implements Mapper {
 		return destinationType;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Mapping> getMappings() {
+	public List<Mapping<?,?>> getMappings() {
 		if (mappings == null) {
 			mappings = new ArrayList<>();
-			final Annotation[] annotations = this.getClass().getAnnotationsByType(Mapping.class);
+			final Annotation[] annotations = this.getClass().getAnnotationsByType(com.solid.mapping.annotation.Mapping.class);
 	        if (annotations != null) {
 	            for (final Annotation annotation : annotations) {
-	                if (annotation instanceof Mapping) {
-	                	mappings.add((Mapping) annotation);
+	                if (annotation instanceof com.solid.mapping.annotation.Mapping) {
+	                	final com.solid.mapping.annotation.Mapping annotationMapping = (com.solid.mapping.annotation.Mapping) annotation;
+	                	mappings.add(new MappingBuilder().source(annotationMapping.source())
+								   						 .customSourceConverter(annotationMapping.customSourceConverter())
+								   						 .sourceConverter(annotationMapping.sourceConverter())
+								   						 .destination(annotationMapping.destination())
+								   						 .customDestinationConverter(annotationMapping.customDestinationConverter())
+								   						 .destinationConverter(annotationMapping.destinationConverter())
+								   						 .type(annotationMapping.type())
+								   						 .build());
 	                }
 	            }
 	        }
@@ -67,17 +97,16 @@ public abstract class AbstractMapper implements Mapper {
 		return mappings;
 	}
 	
-	private List<CustomMapping> convert(final List<Mapping> mappings) {
-		final List<CustomMapping> customMappings = new ArrayList<CustomMapping>();
-		mappings.forEach(mapping -> customMappings.add((CustomMapping) new MappingBuilder().source(mapping.source())
-		        																		   .customSourceConverter(mapping.customSourceConverter())
-		        																		   .sourceConverter(mapping.sourceConverter())
-		        																		   .destination(mapping.destination())
-		        																		   .customDestinationConverter(mapping.customDestinationConverter())
-		        																		   .destinationConverter(mapping.destinationConverter())
-		        																		   .type(mapping.type())
-		        																		   .build()));
-		return customMappings;
+	private List<Mapping<?, ?>> getFieldMappings() {
+		return getMappings().stream()
+	              			.filter(m -> m instanceof FieldMapping)
+	              			.collect(Collectors.toList());
+	}
+	
+	private List<Mapping<?, ?>> getMethodMappings() {
+		return getMappings().stream()
+	              			.filter(m -> m instanceof MethodMapping)
+	              			.collect(Collectors.toList());
 	}
 	
 	@Override
