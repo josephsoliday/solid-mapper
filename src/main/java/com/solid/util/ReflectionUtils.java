@@ -65,11 +65,6 @@ public class ReflectionUtils {
         }
         return setters;
     }
-    
-	private static Method getMethod(final Object object, final String name, final Class<?> type, boolean getter) throws NoSuchMethodException, SecurityException {
-		return getter ? object.getClass().getDeclaredMethod(type == boolean.class ? IS_PREFIX + StringUtils.capitalize(name): GETTER_PREFIX + StringUtils.capitalize(name))
-				: object.getClass().getDeclaredMethod(SETTER_PREFIX + StringUtils.capitalize(name), type);
-	}
 
 	/**
 	 * Checks if the method is a getter.
