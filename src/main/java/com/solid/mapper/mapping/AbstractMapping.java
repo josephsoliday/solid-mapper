@@ -38,6 +38,7 @@ public abstract class AbstractMapping<S,D> implements Mapping {
 		this.type = type;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public S getSource() {
 		return source;
@@ -48,6 +49,7 @@ public abstract class AbstractMapping<S,D> implements Mapping {
 		return sourceConverter;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public D getDestination() {
 		return destination;
