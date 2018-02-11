@@ -3,7 +3,7 @@ package com.solid.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.solid.mapping.Mapping;
+import com.solid.mapper.mapping.Mapping;
 
 /**
  * Builder for creating objects of type {@link Mapper}.

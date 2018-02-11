@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.solid.converter.Converter;
-import com.solid.mapping.Mapping;
+import com.solid.mapper.mapping.Mapping;
 
 /**
  * An abstract cache to be used to store items and converters used by a mapper.

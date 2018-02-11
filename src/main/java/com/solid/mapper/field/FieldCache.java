@@ -9,7 +9,7 @@ import com.solid.mapper.MappingException;
 import com.solid.mapper.cache.AbstractCache;
 import com.solid.mapper.cache.Cache;
 import com.solid.mapper.cache.CacheItem;
-import com.solid.mapping.Mapping;
+import com.solid.mapper.mapping.Mapping;
 import com.solid.util.ReflectionUtils;
 
 /**

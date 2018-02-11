@@ -9,7 +9,7 @@ import com.solid.mapper.Mapper;
 import com.solid.mapper.MappingException;
 import com.solid.mapper.cache.Cache;
 import com.solid.mapper.cache.CacheItem;
-import com.solid.mapping.Mapping;
+import com.solid.mapper.mapping.Mapping;
 
 /**
  * Class for mapping properties between objects.

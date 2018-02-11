@@ -1,7 +1,6 @@
 package com.solid.util;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,47 +64,6 @@ public class ReflectionUtils {
             }
         }
         return setters;
-    }
-    
-    public static ObjectMethod getObjectMethod(final Object object, final String name, final Class<?> type, boolean getter) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-    	Method method = null;
-    	Object parentObject = object;
-    	
-    	if (name.contains(".")) {
-    		final String[] names = name.split("\\.");
-    		for (int i = 0; i < names.length; i++) {
-    			if (i < names.length - 1) {
-    				method = getMethod(parentObject, names[i], null, true);
-    				parentObject = method.invoke(object, new Object[] {});
-    			} else {
-					method = getMethod(parentObject, names[i], type, getter);
-    			}
-    		}
-    	} else {
-    		method = getMethod(parentObject, name, type, getter);
-    	}
-    	return new ObjectMethod(parentObject, type, method, name);
-    }
-    
-    public static ObjectField getObjectField(final Object object, final String name) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-    	Field field = null;
-    	Object parentObject = object;
-    	
-    	if (name.contains(".")) {
-    		final String[] names = name.split("\\.");
-    		for (int i = 0; i < names.length; i++) {
-    			if (i < names.length - 1) {
-    				field = parentObject.getClass().getDeclaredField(names[i]);
-    				field.setAccessible(true);
-    				parentObject = field.get(parentObject);
-    			} else {
-					field = parentObject.getClass().getDeclaredField(names[i]);
-    			}
-    		}
-    	} else {
-    		field = parentObject.getClass().getDeclaredField(name);
-    	}
-    	return new ObjectField(parentObject, field, name);
     }
     
 	private static Method getMethod(final Object object, final String name, final Class<?> type, boolean getter) throws NoSuchMethodException, SecurityException {

@@ -1,4 +1,4 @@
-package com.solid.mapping.annotation;
+package com.solid.mapper.mapping.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import com.solid.converter.Converter;
-import com.solid.mapping.MappingType;
+import com.solid.mapper.mapping.MappingType;
 
 /**
  * Annotation for defining a mapping.

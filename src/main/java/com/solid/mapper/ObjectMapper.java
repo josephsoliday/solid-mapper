@@ -5,7 +5,7 @@ import java.util.List;
 import com.solid.converter.Converter;
 import com.solid.mapper.cache.Cache;
 import com.solid.mapper.cache.CacheItem;
-import com.solid.mapping.Mapping;
+import com.solid.mapper.mapping.Mapping;
 
 /**
  * Class for mapping objects.

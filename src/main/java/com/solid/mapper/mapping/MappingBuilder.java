@@ -1,4 +1,4 @@
-package com.solid.mapping;
+package com.solid.mapper.mapping;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
