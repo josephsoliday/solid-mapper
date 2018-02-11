@@ -1,4 +1,4 @@
-package com.solid.mapper;
+package com.solid.mapper.cache;
 
 /**
  * Represents an item to be copied.
@@ -6,11 +6,11 @@ package com.solid.mapper;
  * @author Joseph
  *
  */
-public class CopyItem<T> {
+public class CacheItem<T> {
 	private T item;
 	private String name;
 	
-	public CopyItem(final T item, final String name) {
+	public CacheItem(final T item, final String name) {
 		this.item = item;
 		this.name = name;
 	}

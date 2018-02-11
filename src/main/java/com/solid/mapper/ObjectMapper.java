@@ -3,6 +3,8 @@ package com.solid.mapper;
 import java.util.List;
 
 import com.solid.converter.Converter;
+import com.solid.mapper.cache.Cache;
+import com.solid.mapper.cache.CacheItem;
 import com.solid.mapping.Mapping;
 
 /**
@@ -23,14 +25,14 @@ public class ObjectMapper extends AbstractMapper implements Mapper {
 	}
 
 	@Override
-	protected MapperRules getMapperRules() {
+	protected Cache getCache() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected void copyField(CopyItem sourceField, Object sourceObject, Converter sourceConverter,
-			CopyItem destinationField, Object destinationObject) throws MappingException {
+	protected void copyField(CacheItem sourceField, Object sourceObject, Converter sourceConverter,
+			CacheItem destinationField, Object destinationObject) throws MappingException {
 		// TODO Auto-generated method stub
 		
 	}

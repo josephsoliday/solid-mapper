@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 
 import com.solid.converter.Converter;
+import com.solid.mapper.cache.Cache;
+import com.solid.mapper.cache.CacheItem;
 import com.solid.mapper.field.FieldMapper;
 import com.solid.mapper.method.MethodMapper;
 import com.solid.mapper.property.PropertyMapper;
@@ -31,11 +33,6 @@ public abstract class AbstractMapper<T> implements Mapper {
 	private final Class<?> destinationType;
 	
 	private List<Mapping> mappings = null;
-	
-	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType) {
-		this.sourceType = sourceType;
-		this.destinationType = destinationType;
-	}
 	
 	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping> mappings) {
 		this.sourceType = sourceType;
@@ -77,7 +74,7 @@ public abstract class AbstractMapper<T> implements Mapper {
 		return destinationType;
 	}
 	
-	protected abstract MapperRules<T> getMapperRules();
+	protected abstract Cache<T> getCache();
 	
 	@Override
 	public List<Mapping> getMappings() {
@@ -140,7 +137,7 @@ public abstract class AbstractMapper<T> implements Mapper {
 	@Override
 	public <S, D> void map(S source, D destination) throws MappingException {
 		try {
-			if (getMapperRules() != null) {
+			if (getCache() != null) {
 				copyFields(source, destination);
 			}
 		} catch (Exception e) {
@@ -151,23 +148,23 @@ public abstract class AbstractMapper<T> implements Mapper {
 	
 	private void copyFields(final Object sourceObject, 
 							final Object destinationObject) throws IllegalArgumentException, IllegalAccessException {
-		copyFields(sourceObject, destinationObject, getMapperRules().getCopyItems().get(sourceObject.getClass()),
-				getMapperRules().getCopyItems().get(destinationObject.getClass()));
+		copyFields(sourceObject, destinationObject, getCache().getItems().get(sourceObject.getClass()),
+				getCache().getItems().get(destinationObject.getClass()));
 	}
 
 	private void copyFields(final Object sourceObject, 
 							final Object destinationObject, 
-							final List<CopyItem<T>> sourceFields,
-							final List<CopyItem<T>> destinationFields) throws IllegalArgumentException, IllegalAccessException {
-		Iterator<CopyItem<T>> sourceFieldIterator = sourceFields.iterator();
-		Iterator<CopyItem<T>> destinationFieldIterator = destinationFields.iterator();
+							final List<CacheItem<T>> sourceFields,
+							final List<CacheItem<T>> destinationFields) throws IllegalArgumentException, IllegalAccessException {
+		Iterator<CacheItem<T>> sourceFieldIterator = sourceFields.iterator();
+		Iterator<CacheItem<T>> destinationFieldIterator = destinationFields.iterator();
 		while (sourceFieldIterator.hasNext() && destinationFieldIterator.hasNext()) {
-			final CopyItem<T> sourceField = sourceFieldIterator.next();
-			final CopyItem<T> destinationField = destinationFieldIterator.next();
-			copyField(sourceField, sourceObject, getMapperRules().getConverters().get(sourceField.getName()), destinationField,
+			final CacheItem<T> sourceField = sourceFieldIterator.next();
+			final CacheItem<T> destinationField = destinationFieldIterator.next();
+			copyField(sourceField, sourceObject, getCache().getConverters().get(sourceField.getName()), destinationField,
 					destinationObject);
 		}
 	}
 
-	protected abstract void copyField(final CopyItem<T> sourceField, final Object sourceObject, final Converter sourceConverter, final CopyItem<T> destinationField, final Object destinationObject) throws MappingException;
+	protected abstract void copyField(final CacheItem<T> sourceField, final Object sourceObject, final Converter sourceConverter, final CacheItem<T> destinationField, final Object destinationObject) throws MappingException;
 }

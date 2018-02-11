@@ -1,4 +1,4 @@
-package com.solid.mapper;
+package com.solid.mapper.cache;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,7 @@ import com.solid.converter.Converter;
  * @author Joseph
  *
  */
-public interface MapperRules<T> {
-	public Map<Class<?>, List<CopyItem<T>>> getCopyItems();
+public interface Cache<T> {
+	public Map<Class<?>, List<CacheItem<T>>> getItems();
 	public Map<String, Converter> getConverters();
 }

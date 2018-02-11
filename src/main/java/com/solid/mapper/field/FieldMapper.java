@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.solid.converter.Converter;
 import com.solid.mapper.AbstractMapper;
-import com.solid.mapper.CopyItem;
 import com.solid.mapper.Mapper;
-import com.solid.mapper.MapperRules;
 import com.solid.mapper.MappingException;
+import com.solid.mapper.cache.Cache;
+import com.solid.mapper.cache.CacheItem;
 import com.solid.mapping.Mapping;
 
 /**
@@ -19,23 +19,23 @@ import com.solid.mapping.Mapping;
  */
 public class FieldMapper extends AbstractMapper<Field> implements Mapper {
 	
-	private final FieldMapperRules mapperRules;
+	private final FieldCache cache;
 	
 	public FieldMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping> mappings) {
 		super(sourceType, destinationType, mappings);
-		mapperRules = new FieldMapperRules(sourceType, destinationType, mappings);
+		cache = new FieldCache(sourceType, destinationType, mappings);
 	}
 
 	@Override
-	protected MapperRules<Field> getMapperRules() {
-		return mapperRules;
+	protected Cache<Field> getCache() {
+		return cache;
 	}
 
 	@Override
-	protected void copyField(final CopyItem<Field> sourceField, 
+	protected void copyField(final CacheItem<Field> sourceField, 
 							 final Object sourceObject, 
 							 final Converter sourceConverter,
-							 final CopyItem<Field> destinationField, 
+							 final CacheItem<Field> destinationField, 
 							 final Object destinationObject) throws MappingException {
 		try {
 			sourceField.getItem().setAccessible(true);

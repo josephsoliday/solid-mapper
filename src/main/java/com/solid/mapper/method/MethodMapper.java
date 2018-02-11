@@ -6,10 +6,10 @@ import java.util.function.Function;
 
 import com.solid.converter.Converter;
 import com.solid.mapper.AbstractMapper;
-import com.solid.mapper.CopyItem;
 import com.solid.mapper.Mapper;
-import com.solid.mapper.MapperRules;
 import com.solid.mapper.MappingException;
+import com.solid.mapper.cache.Cache;
+import com.solid.mapper.cache.CacheItem;
 import com.solid.mapping.Mapping;
 
 /**
@@ -26,17 +26,17 @@ public class MethodMapper extends AbstractMapper<FunctionalInterface> implements
 	}
 
 	@Override
-	protected MapperRules<FunctionalInterface> getMapperRules() {
+	protected Cache<FunctionalInterface> getCache() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void copyField(final CopyItem<FunctionalInterface> setter, 
+	protected void copyField(final CacheItem<FunctionalInterface> setter, 
 							 final Object sourceObject, 
 							 final Converter sourceConverter,
-							 final CopyItem<FunctionalInterface> getter, 
+							 final CacheItem<FunctionalInterface> getter, 
 							 final Object destinationObject) throws MappingException {
 		((BiConsumer)setter.getItem()).accept(destinationObject, ((Function)getter.getItem()).apply(sourceObject));
 	}
