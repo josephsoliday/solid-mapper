@@ -138,7 +138,7 @@ public abstract class AbstractMapper<T> implements Mapper {
 	public <S, D> void map(S source, D destination) throws MappingException {
 		try {
 			if (getCache() != null) {
-				copyFields(source, destination);
+				copy(source, destination);
 			}
 		} catch (Exception e) {
 			throw new MappingException("Unable to map source to destination: " + e.getMessage(), e);
@@ -146,25 +146,25 @@ public abstract class AbstractMapper<T> implements Mapper {
 		children.forEach(mapper -> mapper.map(source, destination));
 	}
 	
-	private void copyFields(final Object sourceObject, 
-							final Object destinationObject) throws IllegalArgumentException, IllegalAccessException {
-		copyFields(sourceObject, destinationObject, getCache().getItems().get(sourceObject.getClass()),
+	private void copy(final Object sourceObject, 
+					  final Object destinationObject) throws IllegalArgumentException, IllegalAccessException {
+		copy(sourceObject, destinationObject, getCache().getItems().get(sourceObject.getClass()),
 				getCache().getItems().get(destinationObject.getClass()));
 	}
 
-	private void copyFields(final Object sourceObject, 
-							final Object destinationObject, 
-							final List<CacheItem<T>> sourceFields,
-							final List<CacheItem<T>> destinationFields) throws IllegalArgumentException, IllegalAccessException {
+	private void copy(final Object sourceObject, 
+					  final Object destinationObject, 
+					  final List<CacheItem<T>> sourceFields,
+					  final List<CacheItem<T>> destinationFields) throws IllegalArgumentException, IllegalAccessException {
 		Iterator<CacheItem<T>> sourceFieldIterator = sourceFields.iterator();
 		Iterator<CacheItem<T>> destinationFieldIterator = destinationFields.iterator();
 		while (sourceFieldIterator.hasNext() && destinationFieldIterator.hasNext()) {
 			final CacheItem<T> sourceField = sourceFieldIterator.next();
 			final CacheItem<T> destinationField = destinationFieldIterator.next();
-			copyField(sourceField, sourceObject, getCache().getConverters().get(sourceField.getName()), destinationField,
+			copy(sourceField, sourceObject, getCache().getConverters().get(sourceField.getName()), destinationField,
 					destinationObject);
 		}
 	}
 
-	protected abstract void copyField(final CacheItem<T> sourceField, final Object sourceObject, final Converter sourceConverter, final CacheItem<T> destinationField, final Object destinationObject) throws MappingException;
+	protected abstract void copy(final CacheItem<T> sourceField, final Object sourceObject, final Converter sourceConverter, final CacheItem<T> destinationField, final Object destinationObject) throws MappingException;
 }

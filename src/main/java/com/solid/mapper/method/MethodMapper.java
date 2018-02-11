@@ -33,11 +33,11 @@ public class MethodMapper extends AbstractMapper<FunctionalInterface> implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void copyField(final CacheItem<FunctionalInterface> setter, 
-							 final Object sourceObject, 
-							 final Converter sourceConverter,
-							 final CacheItem<FunctionalInterface> getter, 
-							 final Object destinationObject) throws MappingException {
+	protected void copy(final CacheItem<FunctionalInterface> setter, 
+					    final Object sourceObject, 
+					    final Converter sourceConverter,
+						final CacheItem<FunctionalInterface> getter, 
+						final Object destinationObject) throws MappingException {
 		((BiConsumer)setter.getItem()).accept(destinationObject, ((Function)getter.getItem()).apply(sourceObject));
 	}
 }

@@ -31,7 +31,7 @@ public class ObjectMapper extends AbstractMapper implements Mapper {
 	}
 
 	@Override
-	protected void copyField(CacheItem sourceField, Object sourceObject, Converter sourceConverter,
+	protected void copy(CacheItem sourceField, Object sourceObject, Converter sourceConverter,
 			CacheItem destinationField, Object destinationObject) throws MappingException {
 		// TODO Auto-generated method stub
 		

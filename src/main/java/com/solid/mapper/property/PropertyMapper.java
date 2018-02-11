@@ -32,11 +32,11 @@ public class PropertyMapper extends AbstractMapper<Method> implements Mapper {
 	}
 
 	@Override
-	protected void copyField(final CacheItem<Method> sourceGetter, 
-							 final Object sourceObject, 
-							 final Converter sourceConverter,
-							 final CacheItem<Method> destinationSetter, 
-							 final Object destinationObject) throws MappingException {
+	protected void copy(final CacheItem<Method> sourceGetter, 
+						final Object sourceObject, 
+						final Converter sourceConverter,
+						final CacheItem<Method> destinationSetter, 
+					    final Object destinationObject) throws MappingException {
 		try {
 			destinationSetter.getItem().invoke(destinationObject, sourceConverter != null ? sourceConverter.convert(sourceGetter.getItem().invoke(sourceObject), sourceGetter.getItem().getReturnType()) 
 																						  : sourceGetter.getItem().invoke(sourceObject));

@@ -32,11 +32,11 @@ public class FieldMapper extends AbstractMapper<Field> implements Mapper {
 	}
 
 	@Override
-	protected void copyField(final CacheItem<Field> sourceField, 
-							 final Object sourceObject, 
-							 final Converter sourceConverter,
-							 final CacheItem<Field> destinationField, 
-							 final Object destinationObject) throws MappingException {
+	protected void copy(final CacheItem<Field> sourceField, 
+					    final Object sourceObject, 
+					    final Converter sourceConverter,
+						final CacheItem<Field> destinationField, 
+						final Object destinationObject) throws MappingException {
 		try {
 			sourceField.getItem().setAccessible(true);
 			destinationField.getItem().setAccessible(true);
