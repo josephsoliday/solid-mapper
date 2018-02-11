@@ -2,11 +2,16 @@ package com.solid.mapper;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
 
+import com.solid.converter.Converter;
+import com.solid.mapper.field.FieldMapper;
+import com.solid.mapper.method.MethodMapper;
+import com.solid.mapper.property.PropertyMapper;
 import com.solid.mapping.FieldMapping;
 import com.solid.mapping.Mapping;
 import com.solid.mapping.MappingBuilder;
@@ -18,7 +23,7 @@ import com.solid.mapping.MethodMapping;
  * @author Joseph Soliday
  * 
  */
-public abstract class AbstractMapper implements Mapper {
+public abstract class AbstractMapper<T> implements Mapper {
 	
 	private final List<Mapper> children = new ArrayList<Mapper>();
 	
@@ -71,6 +76,8 @@ public abstract class AbstractMapper implements Mapper {
 	protected Class<?> getDestinationType() {
 		return destinationType;
 	}
+	
+	protected abstract MapperRules<T> getMapperRules();
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -133,6 +140,35 @@ public abstract class AbstractMapper implements Mapper {
 	
 	@Override
 	public <S, D> void map(S source, D destination) throws MappingException {
+		try {
+			if (getMapperRules() != null) {
+				copyFields(source, destination);
+			}
+		} catch (Exception e) {
+			throw new MappingException("Unable to map source to destination: " + e.getMessage(), e);
+		}
 		children.forEach(mapper -> mapper.map(source, destination));
 	}
+	
+	private void copyFields(final Object sourceObject, 
+							final Object destinationObject) throws IllegalArgumentException, IllegalAccessException {
+		copyFields(sourceObject, destinationObject, getMapperRules().getCopyItems().get(sourceObject.getClass()),
+				getMapperRules().getCopyItems().get(destinationObject.getClass()));
+	}
+
+	private void copyFields(final Object sourceObject, 
+							final Object destinationObject, 
+							final List<CopyItem<T>> sourceFields,
+							final List<CopyItem<T>> destinationFields) throws IllegalArgumentException, IllegalAccessException {
+		Iterator<CopyItem<T>> sourceFieldIterator = sourceFields.iterator();
+		Iterator<CopyItem<T>> destinationFieldIterator = destinationFields.iterator();
+		while (sourceFieldIterator.hasNext() && destinationFieldIterator.hasNext()) {
+			final CopyItem<T> sourceField = sourceFieldIterator.next();
+			final CopyItem<T> destinationField = destinationFieldIterator.next();
+			copyField(sourceField, sourceObject, getMapperRules().getConverters().get(sourceField.getName()), destinationField,
+					destinationObject);
+		}
+	}
+
+	protected abstract void copyField(final CopyItem<T> sourceField, final Object sourceObject, final Converter sourceConverter, final CopyItem<T> destinationField, final Object destinationObject) throws MappingException;
 }

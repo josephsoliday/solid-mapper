@@ -72,6 +72,6 @@ public class MapperBuilder {
 	 * @return a {@link Mapper}
 	 */
 	public Mapper build(final Class<?> sourceType, final Class<?> destinationType) {
-		return new ParentMapper(sourceType, destinationType, type, mappings);
+		return new ObjectMapper(sourceType, destinationType, type, mappings);
 	}
 }

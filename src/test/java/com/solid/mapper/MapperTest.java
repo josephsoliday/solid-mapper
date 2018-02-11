@@ -16,7 +16,7 @@ import com.solid.mapping.MethodMapping;
 
 public class MapperTest {
 	
-	private final Mapper mapper = new ParentMapper(EntityClass.class, DtoClass.class, MapperType.FIELD);
+	private final Mapper mapper = new ObjectMapper(EntityClass.class, DtoClass.class, MapperType.FIELD);
 	private final CustomMapper customMapper = new CustomMapper(MapperType.FIELD);
 	
 	@SuppressWarnings("rawtypes")

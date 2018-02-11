@@ -18,6 +18,6 @@ public class MapperFactory {
 	 * @return a {@link Mapper}
 	 */
 	public static Mapper getMapper(final Class<?> sourceType, final Class<?> destinationType, MapperType type) {
-		return new ParentMapper(sourceType, destinationType, type);
+		return new ObjectMapper(sourceType, destinationType, type);
 	}
 }
