@@ -6,9 +6,9 @@ import java.util.Map;
 import com.solid.converter.Converter;
 
 /**
- * Represents a set of rules for a mapper.
+ * Represents a cache for a mapper.
  * 
- * @author Joseph
+ * @author Joseph Soliday
  *
  */
 public interface Cache<T> {

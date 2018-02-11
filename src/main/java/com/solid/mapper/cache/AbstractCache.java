@@ -8,7 +8,7 @@ import com.solid.converter.Converter;
 import com.solid.mapper.mapping.Mapping;
 
 /**
- * An abstract cache to be used to store items and converters used by a mapper.
+ * An abstract cache to be used to store items and converters for a mapper.
  * 
  * @author Joseph
  *

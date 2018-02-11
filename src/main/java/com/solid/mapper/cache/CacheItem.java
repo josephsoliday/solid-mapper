@@ -1,9 +1,9 @@
 package com.solid.mapper.cache;
 
 /**
- * Represents an item to be copied.
+ * Represents an item to be cached.
  * 
- * @author Joseph
+ * @author Joseph Soliday
  *
  */
 public class CacheItem<T> {
