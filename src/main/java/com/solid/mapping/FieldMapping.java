@@ -8,7 +8,7 @@ import com.solid.converter.Converter;
  * @author Joseph Soliday
  * 
  */
-public class FieldMapping extends AbstractMapping<String, String> implements Mapping<String, String> {
+public class FieldMapping extends AbstractMapping<String, String> implements Mapping {
 
 	public FieldMapping(final String source, 
 						final Converter sourceConverter, 

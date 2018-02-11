@@ -18,7 +18,7 @@ public class ObjectMapper extends AbstractMapper implements Mapper {
 		super(sourceType, destinationType, type);
 	}
 	
-	protected ObjectMapper(final Class<?> sourceType, final Class<?> destinationType, final MapperType type, final List<Mapping<?, ?>> mappings) {
+	protected ObjectMapper(final Class<?> sourceType, final Class<?> destinationType, final MapperType type, final List<Mapping> mappings) {
 		super(sourceType, destinationType, type, mappings);
 	}
 

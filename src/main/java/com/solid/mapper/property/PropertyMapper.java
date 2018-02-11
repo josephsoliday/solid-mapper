@@ -21,7 +21,7 @@ public class PropertyMapper extends AbstractMapper<Method> implements Mapper {
 
 	private final PropertyMapperRules mapperRules;
 	
-	public PropertyMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping<?,?>> mappings) {
+	public PropertyMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping> mappings) {
 		super(sourceType, destinationType, mappings);
 		mapperRules = new PropertyMapperRules(sourceType, destinationType, mappings);
 	}

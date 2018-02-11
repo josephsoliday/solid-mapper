@@ -19,9 +19,9 @@ public abstract class AbstractMapperRules<T> implements MapperRules<T> {
 
 	private Map<Class<?>, List<CopyItem<T>>> copyItems = new HashMap<>();
 	private final Map<String, Converter> converters = new HashMap<>();
-	private List<Mapping<?, ?>> mappings = new ArrayList<>();
+	private List<Mapping> mappings = new ArrayList<>();
 
-	public AbstractMapperRules(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping<?, ?>> mappings) {
+	public AbstractMapperRules(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping> mappings) {
 		this.mappings = mappings;
 		fillCache(sourceType, destinationType);
 	}
@@ -38,7 +38,7 @@ public abstract class AbstractMapperRules<T> implements MapperRules<T> {
 		return converters;
 	}
 	
-	protected List<Mapping<?, ?>> getMappings() {
+	protected List<Mapping> getMappings() {
 		return this.mappings;
 	}
 

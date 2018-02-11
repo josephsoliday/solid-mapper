@@ -20,7 +20,7 @@ import com.solid.util.ReflectionUtils;
  */
 public class FieldMapperRules extends AbstractMapperRules<Field> implements MapperRules<Field> {
 
-	public FieldMapperRules(Class<?> sourceType, Class<?> destinationType, final List<Mapping<?, ?>> mappings) {
+	public FieldMapperRules(Class<?> sourceType, Class<?> destinationType, final List<Mapping> mappings) {
 		super(sourceType, destinationType, mappings);
 	}
 
@@ -48,7 +48,7 @@ public class FieldMapperRules extends AbstractMapperRules<Field> implements Mapp
 		final Map<String, Field> allDestinationFields = ReflectionUtils.getFields(destinationType);
 
 		// Load fields from mappings
-		for (final Mapping<?, ?> mapping : this.getMappings()) {
+		for (final Mapping mapping : this.getMappings()) {
 			if (allSourceFields.containsKey(mapping.getSource())
 					&& allDestinationFields.containsKey(mapping.getDestination())) {
 				final Field sourceField = allSourceFields.get(mapping.getSource());

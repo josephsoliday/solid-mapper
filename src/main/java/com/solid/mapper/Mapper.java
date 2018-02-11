@@ -49,6 +49,6 @@ public interface Mapper {
 	 * 
 	 * @return a list of mappings
 	 */
-	public <S,D> List<Mapping<S,D>> getMappings();
+	public List<Mapping> getMappings();
 	
 }

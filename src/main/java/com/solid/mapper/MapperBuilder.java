@@ -12,7 +12,7 @@ import com.solid.mapping.Mapping;
  *
  */
 public class MapperBuilder {
-	private List<Mapping<?, ?>> mappings = new ArrayList<>();
+	private List<Mapping> mappings = new ArrayList<>();
 	private final List<Mapper> children = new ArrayList<>();
 	private MapperType type = MapperType.FIELD;
 
@@ -22,7 +22,7 @@ public class MapperBuilder {
 	 * @param mapping the mapping to add.
 	 * @return the current instance of {@link MapperBuilder}
 	 */
-    public MapperBuilder addMapping(final Mapping<?, ?> mapping) {
+    public MapperBuilder addMapping(final Mapping mapping) {
 		mappings.add(mapping);
 		return this;
 	}
@@ -34,7 +34,7 @@ public class MapperBuilder {
 	 *
 	 * @return the current instance of {@link MapperBuilder}
 	 */
-	public MapperBuilder mappings(final List<Mapping<?,?>> mappings) {
+	public MapperBuilder mappings(final List<Mapping> mappings) {
 		this.mappings = mappings;
 		return this;
 	}

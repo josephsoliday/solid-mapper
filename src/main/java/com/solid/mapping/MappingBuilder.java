@@ -62,7 +62,7 @@ public class MappingBuilder {
         return this;
     }
 
-    public Mapping<?, ?> build() {
+    public Mapping build() {
         return new FieldMapping(source,
                                  new ConverterBuilder().customConverter(customSourceConverter)
                                  					   .converter(sourceConverter).build(),

@@ -21,7 +21,7 @@ import com.solid.mapping.Mapping;
 @SuppressWarnings("rawtypes")
 public class MethodMapper extends AbstractMapper<FunctionalInterface> implements Mapper {
 	
-	public MethodMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping<?,?>> mappings) {
+	public MethodMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping> mappings) {
 		super(sourceType, destinationType, mappings);
 	}
 

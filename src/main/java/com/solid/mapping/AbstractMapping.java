@@ -8,7 +8,7 @@ import com.solid.converter.Converter;
  * @author Joseph Soliday
  *
  */
-public abstract class AbstractMapping<S,D> implements Mapping<S,D> {
+public abstract class AbstractMapping<S,D> implements Mapping {
 	
 	private S source;
 	private Converter sourceConverter;

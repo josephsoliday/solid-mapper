@@ -30,14 +30,14 @@ public abstract class AbstractMapper<T> implements Mapper {
 	private final Class<?> sourceType;
 	private final Class<?> destinationType;
 	
-	private List<Mapping<?, ?>> mappings = null;
+	private List<Mapping> mappings = null;
 	
 	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType) {
 		this.sourceType = sourceType;
 		this.destinationType = destinationType;
 	}
 	
-	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping<?, ?>> mappings) {
+	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping> mappings) {
 		this.sourceType = sourceType;
 		this.destinationType = destinationType;
 		this.mappings = mappings;
@@ -49,7 +49,7 @@ public abstract class AbstractMapper<T> implements Mapper {
 		loadChildren(type);
 	}
 	
-	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType, final MapperType type, final List<Mapping<?, ?>> mappings) {
+	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType, final MapperType type, final List<Mapping> mappings) {
 		this.sourceType = sourceType;
 		this.destinationType = destinationType;
 		this.mappings = mappings;
@@ -58,7 +58,7 @@ public abstract class AbstractMapper<T> implements Mapper {
 	
 	private void loadChildren(final MapperType type) {
 		this.getChildren().add(type == MapperType.FIELD ? new FieldMapper(sourceType, destinationType, this.getFieldMappings()) : new PropertyMapper(sourceType, destinationType, this.getFieldMappings()));
-		final List<Mapping<?,?>> methodMappings = getMethodMappings();
+		final List<Mapping> methodMappings = getMethodMappings();
 		if (!CollectionUtils.isEmpty(methodMappings)) {
 			this.getChildren().add(new MethodMapper(sourceType, destinationType, methodMappings));
 		}
@@ -79,9 +79,8 @@ public abstract class AbstractMapper<T> implements Mapper {
 	
 	protected abstract MapperRules<T> getMapperRules();
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Mapping<?,?>> getMappings() {
+	public List<Mapping> getMappings() {
 		if (mappings == null) {
 			mappings = new ArrayList<>();
 			final Annotation[] annotations = this.getClass().getAnnotationsByType(com.solid.mapping.annotation.Mapping.class);
@@ -104,13 +103,13 @@ public abstract class AbstractMapper<T> implements Mapper {
 		return mappings;
 	}
 	
-	private List<Mapping<?, ?>> getFieldMappings() {
+	private List<Mapping> getFieldMappings() {
 		return getMappings().stream()
 	              			.filter(m -> m instanceof FieldMapping)
 	              			.collect(Collectors.toList());
 	}
 	
-	private List<Mapping<?, ?>> getMethodMappings() {
+	private List<Mapping> getMethodMappings() {
 		return getMappings().stream()
 	              			.filter(m -> m instanceof MethodMapping)
 	              			.collect(Collectors.toList());

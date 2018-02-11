@@ -21,7 +21,7 @@ import com.solid.util.StringUtils;
  */
 public class PropertyMapperRules extends AbstractMapperRules<Method> implements MapperRules<Method> {
 
-	public PropertyMapperRules(Class<?> sourceType, Class<?> destinationType, List<Mapping<?, ?>> mappings) {
+	public PropertyMapperRules(Class<?> sourceType, Class<?> destinationType, List<Mapping> mappings) {
 		super(sourceType, destinationType, mappings);
 		// TODO Auto-generated constructor stub
 	}
@@ -50,7 +50,7 @@ public class PropertyMapperRules extends AbstractMapperRules<Method> implements 
 		final Map<String, Method> allDestinationSetters = ReflectionUtils.getSetters(destinationType);
 
 		// Load fields from mappings
-		for (final Mapping<?, ?> mapping : this.getMappings()) {
+		for (final Mapping mapping : this.getMappings()) {
 			if (allSourceGetters.containsKey(StringUtils.capitalize(mapping.getSource().toString()))
 					&& allDestinationSetters.containsKey(StringUtils.capitalize(mapping.getDestination().toString()))) {
 				final Method sourceGetter = allSourceGetters

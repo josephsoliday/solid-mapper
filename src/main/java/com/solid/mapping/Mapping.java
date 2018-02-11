@@ -6,19 +6,15 @@ import com.solid.converter.Converter;
  * Interface for defining a mapping between a source {@link S} and a destination {@link D}.
  * 
  * @author Joseph
- * 
- * @param <S> the source type
- * @param <D> the destination type
- *
  */
-public interface Mapping<S,D> {
+public interface Mapping {
 	
 	/**
 	 * Gets the source mapping.
 	 * 
 	 * @return source mapping
 	 */
-	public S getSource();
+	public <S> S getSource();
 	
 	/**
 	 * Gets the converter to use for mapping the source
@@ -32,7 +28,7 @@ public interface Mapping<S,D> {
 	 * 
 	 * @return the destination mapping
 	 */
-	public D getDestination();
+	public <D> D getDestination();
 	
 	/**
 	 * Gets the converter to use for mapping the destination

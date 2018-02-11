@@ -21,7 +21,7 @@ public class FieldMapper extends AbstractMapper<Field> implements Mapper {
 	
 	private final FieldMapperRules mapperRules;
 	
-	public FieldMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping<?,?>> mappings) {
+	public FieldMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping> mappings) {
 		super(sourceType, destinationType, mappings);
 		mapperRules = new FieldMapperRules(sourceType, destinationType, mappings);
 	}

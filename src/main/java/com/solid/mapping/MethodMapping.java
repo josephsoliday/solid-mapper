@@ -10,7 +10,7 @@ import java.util.function.Function;
  * 
  */
 @SuppressWarnings("rawtypes")
-public class MethodMapping extends AbstractMapping<Function, BiConsumer> implements Mapping<Function, BiConsumer> {
+public class MethodMapping extends AbstractMapping<Function, BiConsumer> implements Mapping {
 	
 	public MethodMapping(Function source, BiConsumer destination) {
 		super(source, destination, MappingType.ONE_WAY);
