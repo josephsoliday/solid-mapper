@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 
 import com.solid.converter.Converter;
 import com.solid.mapper.cache.Cache;
+import com.solid.mapper.cache.CacheBuilder;
 import com.solid.mapper.cache.CacheItem;
 import com.solid.mapper.field.FieldMapper;
 import com.solid.mapper.mapping.FieldMapping;
@@ -33,6 +34,8 @@ public abstract class AbstractMapper<T> implements Mapper {
 	private final Class<?> destinationType;
 	
 	private List<Mapping> mappings = null;
+	
+	private Cache<T> cache = null;
 	
 	protected AbstractMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping> mappings) {
 		this.sourceType = sourceType;
@@ -74,7 +77,15 @@ public abstract class AbstractMapper<T> implements Mapper {
 		return destinationType;
 	}
 	
-	protected abstract Cache<T> getCache();
+	protected Cache<T> getCache() {
+		if (cache == null) {
+			final CacheBuilder<T> cacheBuilder = getCacheBuilder();
+			cache = cacheBuilder != null ? cacheBuilder.build(sourceType, destinationType, mappings) : null;
+		}
+		return cache;
+	}
+	
+	protected abstract CacheBuilder<T> getCacheBuilder();
 	
 	@Override
 	public List<Mapping> getMappings() {
@@ -148,8 +159,8 @@ public abstract class AbstractMapper<T> implements Mapper {
 	
 	private void copy(final Object sourceObject, 
 					  final Object destinationObject) throws IllegalArgumentException, IllegalAccessException {
-		copy(sourceObject, destinationObject, getCache().getItems().get(sourceObject.getClass()),
-				getCache().getItems().get(destinationObject.getClass()));
+		copy(sourceObject, destinationObject, getCache().get(sourceObject.getClass()),
+				getCache().get(destinationObject.getClass()));
 	}
 
 	private void copy(final Object sourceObject, 
@@ -161,7 +172,7 @@ public abstract class AbstractMapper<T> implements Mapper {
 		while (sourceFieldIterator.hasNext() && destinationFieldIterator.hasNext()) {
 			final CacheItem<T> sourceField = sourceFieldIterator.next();
 			final CacheItem<T> destinationField = destinationFieldIterator.next();
-			copy(sourceField, sourceObject, getCache().getConverters().get(sourceField.getName()), destinationField,
+			copy(sourceField, sourceObject, sourceField.getConverter(), destinationField,
 					destinationObject);
 		}
 	}

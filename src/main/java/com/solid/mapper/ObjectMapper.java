@@ -3,7 +3,7 @@ package com.solid.mapper;
 import java.util.List;
 
 import com.solid.converter.Converter;
-import com.solid.mapper.cache.Cache;
+import com.solid.mapper.cache.CacheBuilder;
 import com.solid.mapper.cache.CacheItem;
 import com.solid.mapper.mapping.Mapping;
 
@@ -23,9 +23,9 @@ public class ObjectMapper extends AbstractMapper implements Mapper {
 	protected ObjectMapper(final Class<?> sourceType, final Class<?> destinationType, final MapperType type, final List<Mapping> mappings) {
 		super(sourceType, destinationType, type, mappings);
 	}
-
+	
 	@Override
-	protected Cache getCache() {
+	protected CacheBuilder getCacheBuilder() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -8,7 +8,7 @@ import com.solid.converter.Converter;
 import com.solid.mapper.AbstractMapper;
 import com.solid.mapper.Mapper;
 import com.solid.mapper.MappingException;
-import com.solid.mapper.cache.Cache;
+import com.solid.mapper.cache.CacheBuilder;
 import com.solid.mapper.cache.CacheItem;
 import com.solid.mapper.mapping.Mapping;
 
@@ -24,9 +24,9 @@ public class MethodMapper extends AbstractMapper<FunctionalInterface> implements
 	public MethodMapper(final Class<?> sourceType, final Class<?> destinationType, final List<Mapping> mappings) {
 		super(sourceType, destinationType, mappings);
 	}
-
+	
 	@Override
-	protected Cache<FunctionalInterface> getCache() {
+	protected CacheBuilder<FunctionalInterface> getCacheBuilder() {
 		// TODO Auto-generated method stub
 		return null;
 	}
