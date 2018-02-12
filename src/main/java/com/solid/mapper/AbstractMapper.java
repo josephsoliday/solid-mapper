@@ -172,7 +172,7 @@ public abstract class AbstractMapper<T> implements Mapper {
 		while (sourceFieldIterator.hasNext() && destinationFieldIterator.hasNext()) {
 			final CacheItem<T> sourceField = sourceFieldIterator.next();
 			final CacheItem<T> destinationField = destinationFieldIterator.next();
-			copy(sourceField, sourceObject, sourceField.getConverter(), destinationField,
+			copy(sourceField, sourceObject, destinationField.getConverter(), destinationField,
 					destinationObject);
 		}
 	}
