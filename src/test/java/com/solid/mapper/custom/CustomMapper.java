@@ -2,8 +2,8 @@ package com.solid.mapper.custom;
 
 import com.solid.mapper.MapperType;
 import com.solid.mapper.ObjectMapper;
-import com.solid.mapper.mapping.MappingType;
-import com.solid.mapper.mapping.annotation.Mapping;
+import com.solid.mapping.MappingType;
+import com.solid.mapping.annotation.Mapping;
 
 @Mapping(source="size", destination="length", type=MappingType.BI_DIRECTIONAL)
 @Mapping(source="convertValue", customSourceConverter="java.lang.Integer.valueOf", destination="convertValue", customDestinationConverter="java.lang.String.valueOf", type=MappingType.BI_DIRECTIONAL)

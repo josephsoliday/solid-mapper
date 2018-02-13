@@ -1,4 +1,4 @@
-package com.solid.mapper.mapping;
+package com.solid.mapping;
 
 import com.solid.converter.Converter;
 

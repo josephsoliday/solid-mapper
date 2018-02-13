@@ -1,4 +1,4 @@
-package com.solid.mapper.mapping.annotation;
+package com.solid.mapping.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

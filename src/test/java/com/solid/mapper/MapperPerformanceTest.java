@@ -11,8 +11,8 @@ import com.solid.mapper.custom.CustomMapper;
 import com.solid.mapper.custom.DtoClass;
 import com.solid.mapper.custom.EntityClass;
 import com.solid.mapper.custom.EntityClassSubType;
-import com.solid.mapper.mapping.MappingBuilder;
-import com.solid.mapper.mapping.MappingType;
+import com.solid.mapping.MappingBuilder;
+import com.solid.mapping.MappingType;
 
 public class MapperPerformanceTest {
 

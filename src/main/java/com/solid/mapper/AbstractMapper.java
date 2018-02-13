@@ -13,12 +13,12 @@ import com.solid.mapper.cache.Cache;
 import com.solid.mapper.cache.CacheBuilder;
 import com.solid.mapper.cache.CacheItem;
 import com.solid.mapper.field.FieldMapper;
-import com.solid.mapper.mapping.FieldMapping;
-import com.solid.mapper.mapping.Mapping;
-import com.solid.mapper.mapping.MappingBuilder;
-import com.solid.mapper.mapping.MethodMapping;
 import com.solid.mapper.method.MethodMapper;
 import com.solid.mapper.property.PropertyMapper;
+import com.solid.mapping.FieldMapping;
+import com.solid.mapping.Mapping;
+import com.solid.mapping.MappingBuilder;
+import com.solid.mapping.MethodMapping;
 
 /**
  * Abstract class with basic functionality for implementing {@link Mapper}.
@@ -91,11 +91,11 @@ public abstract class AbstractMapper<T> implements Mapper {
 	public List<Mapping> getMappings() {
 		if (mappings == null) {
 			mappings = new ArrayList<>();
-			final Annotation[] annotations = this.getClass().getAnnotationsByType(com.solid.mapper.mapping.annotation.Mapping.class);
+			final Annotation[] annotations = this.getClass().getAnnotationsByType(com.solid.mapping.annotation.Mapping.class);
 	        if (annotations != null) {
 	            for (final Annotation annotation : annotations) {
-	                if (annotation instanceof com.solid.mapper.mapping.annotation.Mapping) {
-	                	final com.solid.mapper.mapping.annotation.Mapping annotationMapping = (com.solid.mapper.mapping.annotation.Mapping) annotation;
+	                if (annotation instanceof com.solid.mapping.annotation.Mapping) {
+	                	final com.solid.mapping.annotation.Mapping annotationMapping = (com.solid.mapping.annotation.Mapping) annotation;
 	                	mappings.add(new MappingBuilder().source(annotationMapping.source())
 								   						 .customSourceConverter(annotationMapping.customSourceConverter())
 								   						 .sourceConverter(annotationMapping.sourceConverter())

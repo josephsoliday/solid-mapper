@@ -12,7 +12,7 @@ import com.solid.mapper.custom.BaseDto;
 import com.solid.mapper.custom.CustomMapper;
 import com.solid.mapper.custom.DtoClass;
 import com.solid.mapper.custom.EntityClass;
-import com.solid.mapper.mapping.MethodMapping;
+import com.solid.mapping.MethodMapping;
 
 public class MapperTest {
 	

@@ -2,7 +2,7 @@ package com.solid.mapper.cache;
 
 import java.util.List;
 
-import com.solid.mapper.mapping.Mapping;
+import com.solid.mapping.Mapping;
 
 /**
  * Interface that defines behavior for building a cache.

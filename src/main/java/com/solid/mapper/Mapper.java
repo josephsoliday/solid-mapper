@@ -2,7 +2,7 @@ package com.solid.mapper;
 
 import java.util.List;
 
-import com.solid.mapper.mapping.Mapping;
+import com.solid.mapping.Mapping;
 
 /**
  * Interface for mapping an object of one type to an object of another type.
