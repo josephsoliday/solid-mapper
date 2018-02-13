@@ -11,6 +11,7 @@ import com.solid.converter.ConverterBuilder;
  * @author Joseph Soliday
  *
  */
+@SuppressWarnings({ "rawtypes" })
 public class MappingBuilder {
     private String source;
     private Class<?> sourceConverter;
@@ -61,14 +62,28 @@ public class MappingBuilder {
         this.type = type;
         return this;
     }
+    
+    public MappingBuilder getter(final Function getter) {
+    	this.getter = getter;
+    	return this;
+    }
+    
+    public MappingBuilder setter(final BiConsumer setter) {
+    	this.setter = setter;
+    	return this;
+    }
 
     public Mapping build() {
-        return new FieldMapping(source,
-                                 new ConverterBuilder().customConverter(customSourceConverter)
-                                 					   .converter(sourceConverter).build(),
-                                 destination,
-                                 new ConverterBuilder().customConverter(customDestinationConverter)
-           					   						   .converter(destinationConverter).build(),
-                                 type);
+    	if (setter != null && getter != null) {
+    		return new MethodMapping(getter, setter);
+    	} else {
+	        return new FieldMapping(source,
+	                                 new ConverterBuilder().customConverter(customSourceConverter)
+	                                 					   .converter(sourceConverter).build(),
+	                                 destination,
+	                                 new ConverterBuilder().customConverter(customDestinationConverter)
+	           					   						   .converter(destinationConverter).build(),
+	                                 type);
+    	}
     }
 }

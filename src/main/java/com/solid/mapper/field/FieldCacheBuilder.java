@@ -9,6 +9,7 @@ import com.solid.mapper.MappingException;
 import com.solid.mapper.cache.Cache;
 import com.solid.mapper.cache.CacheBuilder;
 import com.solid.mapper.cache.CacheItem;
+import com.solid.mapping.FieldMapping;
 import com.solid.mapping.Mapping;
 import com.solid.util.ReflectionUtils;
 
@@ -34,12 +35,13 @@ public class FieldCacheBuilder implements CacheBuilder<Field> {
 
 			// Load fields from mappings
 			for (final Mapping mapping : mappings) {
-				if (allSourceFields.containsKey(mapping.getSource())
-						&& allDestinationFields.containsKey(mapping.getDestination())) {
-					final Field sourceField = allSourceFields.get(mapping.getSource());
-					final Field destinationField = allDestinationFields.get(mapping.getDestination());
-					sourceFields.add(new CacheItem<Field>(sourceField, sourceField.getName(), mapping.getSourceConverter()));
-					destinationFields.add(new CacheItem<Field>(destinationField, destinationField.getName(), mapping.getDestinationConverter()));
+				final FieldMapping fieldMapping = (FieldMapping) mapping;
+				if (allSourceFields.containsKey(fieldMapping.getSource())
+						&& allDestinationFields.containsKey(fieldMapping.getDestination())) {
+					final Field sourceField = allSourceFields.get(fieldMapping.getSource());
+					final Field destinationField = allDestinationFields.get(fieldMapping.getDestination());
+					sourceFields.add(new CacheItem<Field>(sourceField, sourceField.getName(), fieldMapping.getSourceConverter()));
+					destinationFields.add(new CacheItem<Field>(destinationField, destinationField.getName(), fieldMapping.getDestinationConverter()));
 				}
 			}
 

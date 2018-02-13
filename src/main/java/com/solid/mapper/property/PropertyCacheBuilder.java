@@ -9,6 +9,7 @@ import com.solid.mapper.MappingException;
 import com.solid.mapper.cache.Cache;
 import com.solid.mapper.cache.CacheBuilder;
 import com.solid.mapper.cache.CacheItem;
+import com.solid.mapping.FieldMapping;
 import com.solid.mapping.Mapping;
 import com.solid.util.ReflectionUtils;
 import com.solid.util.StringUtils;
@@ -35,14 +36,15 @@ public class PropertyCacheBuilder implements CacheBuilder<Method> {
 
 			// Load fields from mappings
 			for (final Mapping mapping : mappings) {
-				if (allSourceGetters.containsKey(StringUtils.capitalize(mapping.getSource().toString()))
-						&& allDestinationSetters.containsKey(StringUtils.capitalize(mapping.getDestination().toString()))) {
+				final FieldMapping fieldMapping = (FieldMapping) mapping;
+				if (allSourceGetters.containsKey(StringUtils.capitalize(fieldMapping.getSource()))
+						&& allDestinationSetters.containsKey(StringUtils.capitalize(fieldMapping.getDestination()))) {
 					final Method sourceGetter = allSourceGetters
-							.get(StringUtils.capitalize(mapping.getSource().toString()));
+							.get(StringUtils.capitalize(fieldMapping.getSource()));
 					final Method destinationSetter = allDestinationSetters
-							.get(StringUtils.capitalize(mapping.getDestination().toString()));
-					sourceGetters.add(new CacheItem<Method>(sourceGetter, sourceGetter.getName(), mapping.getSourceConverter()));
-					destinationSetters.add(new CacheItem<Method>(destinationSetter, destinationSetter.getName(), mapping.getDestinationConverter()));
+							.get(StringUtils.capitalize(fieldMapping.getDestination()));
+					sourceGetters.add(new CacheItem<Method>(sourceGetter, sourceGetter.getName(), fieldMapping.getSourceConverter()));
+					destinationSetters.add(new CacheItem<Method>(destinationSetter, destinationSetter.getName(), fieldMapping.getDestinationConverter()));
 				}
 			}
 

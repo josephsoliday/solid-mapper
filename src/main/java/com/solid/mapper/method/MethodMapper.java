@@ -27,8 +27,7 @@ public class MethodMapper extends AbstractMapper<FunctionalInterface> implements
 	
 	@Override
 	protected CacheBuilder<FunctionalInterface> getCacheBuilder() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MethodCacheBuilder();
 	}
 
 	@SuppressWarnings("unchecked")
