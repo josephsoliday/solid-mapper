@@ -133,35 +133,65 @@ public abstract class AbstractMapper<T> implements Mapper {
 	public <S, D> List<D> map(final List<S> sources) throws MappingException {
 		final List<D> destinations = new ArrayList<>();
         if (sources != null) {
-            // sources.forEach(source -> destinations.add(map(source)));
-
-            // https://www.concretepage.com/java/jdk-8/java-8-runnable-and-callable-lambda-example-with-argument
-
-            final List<List<S>> partitionedSources = ListUtils.partition(sources, 1000);
-            final List<Future<List<D>>> destinationFutures = new ArrayList<>();
-
-            partitionedSources.forEach(partitionedSource -> {
-                final Callable<List<D>> callable = () -> {
-                    final List<D> partitionedDestination = new ArrayList<>();
-                    partitionedSource.forEach(source -> partitionedDestination.add(map(source)));
-                    return partitionedDestination;
-                };
-
-                final ExecutorService service = Executors.newSingleThreadExecutor();
-                final Future<List<D>> future = service.submit(callable);
-                destinationFutures.add(future);
-            });
-            destinationFutures.forEach(destinationFuture -> {
-                try {
-                    destinations.addAll(destinationFuture.get());
-                } catch (final InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (final ExecutionException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            });
+            sources.forEach(source -> destinations.add(map(source)));
+        }
+        return destinations;
+	}
+	
+	private <S, D> List<D> mapWithThreads(final List<S> sources) throws MappingException {
+		// https://www.concretepage.com/java/jdk-8/java-8-runnable-and-callable-lambda-example-with-argument
+		final List<D> destinations = new ArrayList<>();
+        if (sources != null) {
+        	final List<List<S>> partitionedSources = ListUtils.partition(sources, 1000);
+        	final List<Thread> destinationThreads = new ArrayList<>();
+        	
+        	partitionedSources.forEach(partitionedSource -> {
+        		Runnable runnable = () -> {
+        			partitionedSource.forEach(source -> destinations.add(map(source)));
+        		};
+        		Thread thread = new Thread(runnable);
+        		destinationThreads.add(thread);
+        		thread.start();
+        	});
+        	
+        	destinationThreads.forEach(thread -> {
+				try {
+					thread.join();
+				} catch (InterruptedException e) {
+					throw new MappingException(e.getMessage(), e);
+				}
+			});
+        }
+        return destinations;
+	}
+	private <S, D> List<D> mapWithFutures(final List<S> sources) throws MappingException {
+		final List<D> destinations = new ArrayList<>();
+        if (sources != null) {
+			final List<List<S>> partitionedSources = ListUtils.partition(sources, 1000);
+	        final List<Future<List<D>>> destinationFutures = new ArrayList<>();
+	
+	        partitionedSources.forEach(partitionedSource -> {
+	            final Callable<List<D>> callable = () -> {
+	                final List<D> partitionedDestination = new ArrayList<>();
+	                partitionedSource.forEach(source -> partitionedDestination.add(map(source)));
+	                return partitionedDestination;
+	            };
+	
+	            final ExecutorService service = Executors.newSingleThreadExecutor();
+	            final Future<List<D>> future = service.submit(callable);
+	            destinationFutures.add(future);
+	        });
+	        destinationFutures.forEach(destinationFuture -> {
+	            try {
+	                destinations.addAll(destinationFuture.get());
+	            } catch (final InterruptedException e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            } catch (final ExecutionException e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            }
+	        });
         }
         return destinations;
 	}
