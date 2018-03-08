@@ -16,18 +16,18 @@ public interface Mapper {
      *
      * @param sources the source objects to map
      * @return the mapped list of objects
-     * @throws MappingException thrown when an exception occurs mapping object properties
+     * @throws MappingRuntimeException thrown when an exception occurs mapping object properties
      */
-	public <S, D> List<D> map(List<S> sources) throws MappingException;
+	public <S, D> List<D> map(List<S> sources) throws MappingRuntimeException;
 
     /**
      * Maps an object of one type to another type.
      *
      * @param source the source object to map
      * @param destination the destination object to map
-     * @throws MappingException thrown when an exception occurs mapping object properties
+     * @throws MappingRuntimeException thrown when an exception occurs mapping object properties
      */
-	public <S, D> void map(S source, D destination) throws MappingException;
+	public <S, D> void map(S source, D destination) throws MappingRuntimeException;
     
     /**
      * Maps an object of one type to another type.

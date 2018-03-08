@@ -16,10 +16,12 @@ import com.solid.mapping.Mapping;
 @SuppressWarnings("rawtypes")
 public class ObjectMapper extends AbstractMapper implements Mapper {
 
+	@SuppressWarnings("unchecked")
 	protected ObjectMapper(final Class<?> sourceType, final Class<?> destinationType, final MapperType type) {
 		super(sourceType, destinationType, type);
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected ObjectMapper(final Class<?> sourceType, final Class<?> destinationType, final MapperType type, final List<Mapping> mappings) {
 		super(sourceType, destinationType, type, mappings);
 	}
@@ -32,7 +34,7 @@ public class ObjectMapper extends AbstractMapper implements Mapper {
 
 	@Override
 	protected void copy(CacheItem sourceField, Object sourceObject, Converter sourceConverter,
-			CacheItem destinationField, Object destinationObject) throws MappingException {
+			CacheItem destinationField, Object destinationObject) throws MappingRuntimeException {
 		// TODO Auto-generated method stub
 		
 	}

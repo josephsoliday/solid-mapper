@@ -3,7 +3,7 @@ package com.solid.converter;
 /**
  * Thrown when a an object of type {@link Converter} could not be built.
  * 
- * @author Joseph
+ * @author Joseph Soliday
  *
  */
 public class UnableToBuildConverterRuntimeException extends RuntimeException {

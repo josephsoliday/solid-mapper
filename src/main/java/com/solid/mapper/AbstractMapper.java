@@ -130,7 +130,7 @@ public abstract class AbstractMapper<T> implements Mapper {
 	}
 
 	@Override
-	public <S, D> List<D> map(final List<S> sources) throws MappingException {
+	public <S, D> List<D> map(final List<S> sources) throws MappingRuntimeException {
 		final List<D> destinations = new ArrayList<>();
         if (sources != null) {
             sources.forEach(source -> destinations.add(map(source)));
@@ -138,7 +138,8 @@ public abstract class AbstractMapper<T> implements Mapper {
         return destinations;
 	}
 	
-	private <S, D> List<D> mapWithThreads(final List<S> sources) throws MappingException {
+	@SuppressWarnings("unused")
+	private <S, D> List<D> mapWithThreads(final List<S> sources) throws MappingRuntimeException {
 		// https://www.concretepage.com/java/jdk-8/java-8-runnable-and-callable-lambda-example-with-argument
 		final List<D> destinations = new ArrayList<>();
         if (sources != null) {
@@ -158,13 +159,15 @@ public abstract class AbstractMapper<T> implements Mapper {
 				try {
 					thread.join();
 				} catch (InterruptedException e) {
-					throw new MappingException(e.getMessage(), e);
+					throw new MappingRuntimeException(e.getMessage(), e);
 				}
 			});
         }
         return destinations;
 	}
-	private <S, D> List<D> mapWithFutures(final List<S> sources) throws MappingException {
+	
+	@SuppressWarnings("unused")
+	private <S, D> List<D> mapWithFutures(final List<S> sources) throws MappingRuntimeException {
 		final List<D> destinations = new ArrayList<>();
         if (sources != null) {
 			final List<List<S>> partitionedSources = ListUtils.partition(sources, 1000);
@@ -184,12 +187,8 @@ public abstract class AbstractMapper<T> implements Mapper {
 	        destinationFutures.forEach(destinationFuture -> {
 	            try {
 	                destinations.addAll(destinationFuture.get());
-	            } catch (final InterruptedException e) {
-	                // TODO Auto-generated catch block
-	                e.printStackTrace();
-	            } catch (final ExecutionException e) {
-	                // TODO Auto-generated catch block
-	                e.printStackTrace();
+	            } catch (final InterruptedException | ExecutionException e) {
+	            	throw new MappingRuntimeException(e.getMessage(), e);
 	            }
 	        });
         }
@@ -202,27 +201,23 @@ public abstract class AbstractMapper<T> implements Mapper {
 		D destination = null;
 		try {
 			destination = source.getClass().equals(sourceType) ? (D)this.destinationType.newInstance() : (D)sourceType.newInstance();//(T) getType(source).newInstance();
-		} catch (final Exception e) {
-			throw new MappingException("Error creating instance of destination: " + e.getMessage(), e);
+		} catch (final InstantiationException | IllegalAccessException e) {
+			throw new MappingRuntimeException("Error creating instance of destination: " + e.getMessage(), e);
 		}
 		map(source, destination);
 		return destination;
 	}
 
 	@Override
-	public <S, D> void map(final S source, final D destination) throws MappingException {
-		try {
-			if (getCache() != null) {
-				copy(source, destination);
-			}
-		} catch (final Exception e) {
-			throw new MappingException("Unable to map source to destination: " + e.getMessage(), e);
+	public <S, D> void map(final S source, final D destination) throws MappingRuntimeException {
+		if (getCache() != null) {
+			copy(source, destination);
 		}
 		children.forEach(mapper -> mapper.map(source, destination));
 	}
 
 	private void copy(final Object sourceObject,
-					  final Object destinationObject) throws IllegalArgumentException, IllegalAccessException {
+					  final Object destinationObject) throws MappingRuntimeException {
 		copy(sourceObject, destinationObject, getCache().get(sourceObject.getClass()),
 				getCache().get(destinationObject.getClass()));
 	}
@@ -230,7 +225,7 @@ public abstract class AbstractMapper<T> implements Mapper {
 	private void copy(final Object sourceObject,
 					  final Object destinationObject,
 					  final List<CacheItem<T>> sourceFields,
-					  final List<CacheItem<T>> destinationFields) throws IllegalArgumentException, IllegalAccessException {
+					  final List<CacheItem<T>> destinationFields) throws MappingRuntimeException {
 		final Iterator<CacheItem<T>> sourceFieldIterator = sourceFields.iterator();
 		final Iterator<CacheItem<T>> destinationFieldIterator = destinationFields.iterator();
 		while (sourceFieldIterator.hasNext() && destinationFieldIterator.hasNext()) {
@@ -241,5 +236,5 @@ public abstract class AbstractMapper<T> implements Mapper {
 		}
 	}
 
-	protected abstract void copy(final CacheItem<T> sourceField, final Object sourceObject, final Converter sourceConverter, final CacheItem<T> destinationField, final Object destinationObject) throws MappingException;
+	protected abstract void copy(final CacheItem<T> sourceField, final Object sourceObject, final Converter sourceConverter, final CacheItem<T> destinationField, final Object destinationObject) throws MappingRuntimeException;
 }

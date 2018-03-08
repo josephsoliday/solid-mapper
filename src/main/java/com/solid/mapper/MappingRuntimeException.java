@@ -6,10 +6,10 @@ package com.solid.mapper;
  * @author Joseph Soliday
  *
  */
-public class MappingException extends RuntimeException {
+public class MappingRuntimeException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
-	public MappingException(String message, Exception cause) {
+	public MappingRuntimeException(String message, Exception cause) {
 		super(message, cause);
 	}
 }

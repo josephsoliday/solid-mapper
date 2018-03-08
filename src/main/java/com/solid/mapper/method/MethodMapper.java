@@ -7,7 +7,7 @@ import java.util.function.Function;
 import com.solid.converter.Converter;
 import com.solid.mapper.AbstractMapper;
 import com.solid.mapper.Mapper;
-import com.solid.mapper.MappingException;
+import com.solid.mapper.MappingRuntimeException;
 import com.solid.mapper.cache.CacheBuilder;
 import com.solid.mapper.cache.CacheItem;
 import com.solid.mapping.Mapping;
@@ -36,7 +36,7 @@ public class MethodMapper extends AbstractMapper<FunctionalInterface> implements
 					    final Object sourceObject, 
 					    final Converter sourceConverter,
 						final CacheItem<FunctionalInterface> getter, 
-						final Object destinationObject) throws MappingException {
+						final Object destinationObject) throws MappingRuntimeException {
 		((BiConsumer)setter.getItem()).accept(destinationObject, ((Function)getter.getItem()).apply(sourceObject));
 	}
 }
