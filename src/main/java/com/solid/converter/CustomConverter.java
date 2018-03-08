@@ -1,5 +1,6 @@
 package com.solid.converter;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -14,11 +15,15 @@ public class CustomConverter implements Converter {
 	private String methodName;
 	private Method method;
 	
-	public CustomConverter(final String converterString) throws ClassNotFoundException {
+	public CustomConverter(final String converterString) {
 		String[] values = converterString.split("\\.");
 		methodName = values[values.length - 1];
 		final String className = converterString.replace("." + methodName, "");
-		clazz = Class.forName(className);
+		try {
+			clazz = Class.forName(className);
+		} catch (final ClassNotFoundException e) {
+			throw new UnableToBuildConverterRuntimeException(e.getMessage(), e);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -26,7 +31,7 @@ public class CustomConverter implements Converter {
 	public <S,D> D convert(S object, Class<?> type) throws UnableToConvertRuntimeException {
 		try {
 			return (D) getMethod(type).invoke(null, object);
-		} catch (Exception e) {
+		} catch (final NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			throw new UnableToConvertRuntimeException("Unable to convert.", e);
 		}
 	}

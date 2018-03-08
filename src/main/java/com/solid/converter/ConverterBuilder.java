@@ -28,7 +28,7 @@ public class ConverterBuilder {
                 return (Converter) converter.newInstance();
             }
             return null;
-        } catch (final Exception e) {
+        } catch (final InstantiationException | IllegalAccessException e) {
             throw new UnableToBuildConverterRuntimeException("Unable to get converter for custom mapping: " + e.getMessage(), e);
         }
 	}
