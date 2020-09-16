@@ -3,7 +3,7 @@ package com.solid.converter;
 /**
  * Builder for creating objects of type {@link Converter}.
  * 
- * @author Joseph
+ * @author Joseph Soliday
  *
  */
 public class ConverterBuilder {

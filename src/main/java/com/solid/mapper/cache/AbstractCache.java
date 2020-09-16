@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * An abstract cache to be used to store items for a mapper.
  * 
- * @author Joseph
+ * @author Joseph Soliday
  *
  * @param <T> the type of the items to store in the cache.
  */

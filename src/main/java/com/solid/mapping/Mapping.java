@@ -5,7 +5,7 @@ import com.solid.converter.Converter;
 /**
  * Interface for defining a mapping between a source {@link S} and a destination {@link D}.
  * 
- * @author Joseph
+ * @author Joseph Soliday
  */
 public interface Mapping {
 	

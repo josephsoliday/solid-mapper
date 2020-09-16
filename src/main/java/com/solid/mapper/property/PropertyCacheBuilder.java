@@ -16,7 +16,7 @@ import com.solid.util.StringUtils;
 /**
  * Implementation of {@link Cache} for methods.
  * 
- * @author Joseph
+ * @author Joseph Soliday
  *
  */
 public class PropertyCacheBuilder implements CacheBuilder<Method> {

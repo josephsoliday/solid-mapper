@@ -15,7 +15,7 @@ import com.solid.util.ReflectionUtils;
 /**
  * Implementation of {@link CacheBuilder} for fields.
  * 
- * @author Joseph
+ * @author Joseph Soliday
  *
  */
 public class FieldCacheBuilder implements CacheBuilder<Field> {

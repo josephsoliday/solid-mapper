@@ -3,7 +3,7 @@ package com.solid.mapping;
 /**
  * Enum that represents the different types of mapping.
  * 
- * @author Joseph
+ * @author Joseph Soliday
  *
  */
 public enum MappingType {
