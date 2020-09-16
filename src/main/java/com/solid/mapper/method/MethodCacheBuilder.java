@@ -24,11 +24,11 @@ public class MethodCacheBuilder implements CacheBuilder<FunctionalInterface> {
 		final List<CacheItem<FunctionalInterface>> destinationSetters = new ArrayList<>();
 		
 		// Load fields from mappings
-		for (final Mapping mapping : mappings) {
+		mappings.forEach(mapping -> {
 			final MethodMapping methodMapping = (MethodMapping) mapping;
 			sourceGetters.add(new CacheItem<FunctionalInterface>((FunctionalInterface) methodMapping.getSource(), null, methodMapping.getSourceConverter()));
 			destinationSetters.add(new CacheItem<FunctionalInterface>((FunctionalInterface) methodMapping.getDestination(), null, methodMapping.getDestinationConverter()));
-		}
+		});
 		
 		cache.put(sourceType, sourceGetters);
 		cache.put(destinationType, destinationSetters);

@@ -32,7 +32,7 @@ public class FieldCacheBuilder implements CacheBuilder<Field> {
 		final Map<String, Field> allDestinationFields = ReflectionUtils.getFields(destinationType);
 
 		// Load fields from mappings
-		for (final Mapping mapping : mappings) {
+		mappings.forEach(mapping -> {
 			final FieldMapping fieldMapping = (FieldMapping) mapping;
 			if (allSourceFields.containsKey(fieldMapping.getSource())
 					&& allDestinationFields.containsKey(fieldMapping.getDestination())) {
@@ -41,7 +41,7 @@ public class FieldCacheBuilder implements CacheBuilder<Field> {
 				sourceFields.add(new CacheItem<Field>(sourceField, sourceField.getName(), fieldMapping.getSourceConverter()));
 				destinationFields.add(new CacheItem<Field>(destinationField, destinationField.getName(), fieldMapping.getDestinationConverter()));
 			}
-		}
+		});
 
 		// Load same fields
 		allSourceFields.entrySet().forEach(entry -> {

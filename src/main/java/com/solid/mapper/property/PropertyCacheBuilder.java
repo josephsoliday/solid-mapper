@@ -33,7 +33,7 @@ public class PropertyCacheBuilder implements CacheBuilder<Method> {
 		final Map<String, Method> allDestinationSetters = ReflectionUtils.getSetters(destinationType);
 
 		// Load fields from mappings
-		for (final Mapping mapping : mappings) {
+		mappings.forEach(mapping -> {
 			final FieldMapping fieldMapping = (FieldMapping) mapping;
 			if (allSourceGetters.containsKey(StringUtils.capitalize(fieldMapping.getSource()))
 					&& allDestinationSetters.containsKey(StringUtils.capitalize(fieldMapping.getDestination()))) {
@@ -42,7 +42,7 @@ public class PropertyCacheBuilder implements CacheBuilder<Method> {
 				sourceGetters.add(new CacheItem<Method>(sourceGetter, sourceGetter.getName(), fieldMapping.getSourceConverter()));
 				destinationSetters.add(new CacheItem<Method>(destinationSetter, destinationSetter.getName(), fieldMapping.getDestinationConverter()));
 			}
-		}
+		});
 
 		// Load same properties
 		allSourceGetters.entrySet().forEach(entry -> {
